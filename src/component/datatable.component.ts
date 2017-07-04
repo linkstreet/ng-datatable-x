@@ -207,7 +207,7 @@ import { Observable } from 'rxjs/Rx';
                 <div class="input-group w-100">
                     <span class="input-group-addon"><i class="mdi mdi-magnify"></i></span>
                     <div class="input-group-btn" *ngIf="searchBy">
-                        <md-select placeholder="Filter By" floatPlaceholder="never" [(ngModel)]="searchBy">
+                        <md-select name="filterColumn" placeholder="Filter By" floatPlaceholder="never" [(ngModel)]="searchBy">
                             <md-option *ngFor="let item of searchItems" [value]="item.searchKey">
                                 {{ item.name }}
                         </md-option>
