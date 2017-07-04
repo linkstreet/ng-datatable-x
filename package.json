@@ -1,6 +1,6 @@
 {
   "name": "ng-datatable-x",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Angular 4 Datatable",
   "main": "./bundles/ng-datatable-x.umd.js",
   "module": "./modules/ng-datatable-x.es5.js",
@@ -14,7 +14,7 @@
     "compodoc-serve": "compodoc -s"
   },
   "typings": "./index.d.ts",
-  "author": "",
+  "author": "Akhilesh Bamhore",
   "repository": {
     "type": "git",
     "url": "https://github.com/linkstreet/ng-datatable-x"
@@ -26,7 +26,9 @@
   "keywords": [
     "angular",
     "javascript",
-    "typescript"
+    "typescript",
+    "datatable",
+    "ng-datatable"
   ],
   "license": "MIT",
   "peerDependencies": {
@@ -50,8 +52,10 @@
     "@types/jasmine": "2.5.52",
     "@types/node": "8.0.1",
     "chalk": "1.1.3",
+    "clean-css": "^4.1.5",
     "codelyzer": "3.1.1",
     "core-js": "2.4.1",
+    "html-minifier": "^3.5.2",
     "jasmine-core": "2.6.4",
     "karma": "1.7.0",
     "karma-chrome-launcher": "2.1.1",
@@ -59,9 +63,12 @@
     "karma-sourcemap-loader": "0.3.7",
     "karma-spec-reporter": "0.0.31",
     "karma-webpack": "2.0.3",
+    "node-sass": "^4.5.3",
     "reflect-metadata": "0.1.10",
     "rollup": "0.43.0",
+    "rollup-plugin-angular": "^0.4.4",
     "rollup-plugin-node-resolve": "3.0.0",
+    "rollup-plugin-typescript": "^0.8.1",
     "rxjs": "5.4.1",
     "shelljs": "0.7.8",
     "sorcery": "0.10.0",
