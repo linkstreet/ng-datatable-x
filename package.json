@@ -1,6 +1,6 @@
 {
   "name": "ng-datatable-x",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Angular 4 Datatable",
   "main": "./bundles/ng-datatable-x.umd.js",
   "module": "./modules/ng-datatable-x.es5.js",
@@ -31,7 +31,10 @@
   "license": "MIT",
   "peerDependencies": {
     "@angular/common": ">= 4.1.0",
-    "@angular/core": ">= 4.1.0"
+    "@angular/core": ">= 4.1.0",
+    "@angular/forms": "^4.2.5",
+    "@angular/material": "^2.0.0-beta.7",
+    "@ng-bootstrap/ng-bootstrap": "^1.0.0-alpha.27"
   },
   "devDependencies": {
     "@angular/animations": "4.1.0",
@@ -70,10 +73,5 @@
     "webpack": "3.0.0",
     "yargs": "8.0.2",
     "zone.js": "0.8.12"
-  },
-  "dependencies": {
-    "@angular/forms": "^4.2.5",
-    "@angular/material": "^2.0.0-beta.7",
-    "@ng-bootstrap/ng-bootstrap": "^1.0.0-alpha.27"
   }
 }

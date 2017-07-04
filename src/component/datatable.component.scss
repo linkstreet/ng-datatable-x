@@ -1,0 +1,239 @@
+.datatable {
+    position: relative;
+    width: 100%;
+    .table {
+        margin: 0;
+        tr {
+            th, td {
+                vertical-align: middle;
+                padding: .75em;
+                &:first-child {
+                    padding-left: 20px;
+                }
+                .expand-row-icon {
+                    padding: 0;
+                    &:hover {
+                        color: #0275d8 !important;
+                    }
+                }
+                .custom-checkbox.custom-control {
+                    margin: -.75em 0 0 0;
+                    vertical-align: middle;
+                    padding-left: 18px;
+                }
+            }
+            th {
+                font-size: 12px;
+                font-family: 'mulibold', 'Helvetica Neue', sans-serif;
+                color: rgba(0, 0, 0, 0.38);
+                text-transform: uppercase;
+                border : 0px;
+                .expand-row-icon {
+                    color: rgba(0, 0, 0, 0.38);
+                }
+                .sort-icon {
+                    font-size: 13px;
+                }
+            }
+            td {
+                font-family: 'muliregular', 'Helvetica Neue', sans-serif;
+                font-size: 13px;
+                &.active {
+                    color: #4a90e2;
+                    font-family: 'mulibold', 'Helvetica Neue', sans-serif;
+                }
+                .mat-icon-button {
+                    height: 24px;
+                    line-height: 24px;
+                    .mat-button-focus-overlay, .mat-button-ripple {
+                        display: none !important;
+                    }
+                    &:hover {
+                        color: #0275d8;
+                    }
+                    .mat-icon {
+                        font-size: 24px;
+                    }
+                    &:focus {
+                        outline: none !important;
+                    }
+                }
+            }
+            &:hover{
+                td.cursor-pointer {
+                    color: #4a90e2;
+                }
+            }
+            &.expand-row {
+                .card-block{
+                    padding: 10px;
+                }
+                > td {
+                    padding: 0;
+                    td {
+                        border-top: 0;
+                    }
+                }
+            }
+            &.no-reults-found {
+                td {
+                    padding: 50px 10px 30px 10px;
+                }
+                h5 {
+                    color: rgba(0, 0, 0, 0.87);
+                }
+                p {
+                    font-size: 16px;
+                    color: rgba(0, 0, 0, 0.54);
+                }
+            }
+        }
+        tfoot {
+            td {
+                font-size: 12px;
+                font-family: 'mulibold', 'Helvetica Neue', sans-serif;
+                color: rgba(0, 0, 0, 0.38);
+                text-transform: uppercase;
+                &:first-child {
+                    padding: 0;
+                }
+                .dt-footer{
+                    padding:15px 0;
+                    .show_per_page, .show_total_count {
+                        display: none;
+                        padding: 0px 20px;
+                        font-family: 'mulibold', 'Helvetica Neue', sans-serif;
+                        .mat-select {
+                            display: inline-block !important;
+                            padding-left: 5px;
+                            vertical-align: super;
+                            .mat-select-value {
+                                font-family: 'mulisemibold', 'Helvetica Neue', sans-serif;
+                            }
+                            .mat-select-trigger {
+                                min-width: 40px;
+                            }
+                            .mat-select-underline {
+                                display: none;
+                            }
+                        }
+                    }
+                    .show_total_count {
+                        display: block;
+                    }
+                    ngb-pagination {
+                        display: block;
+                        .pagination{
+                            margin-bottom: 0;
+                            padding: 0 20px;
+                            .page-item{
+                                &.disabled {
+                                    .page-link{
+                                        color: #b7b7b7;
+                                        cursor: no-drop;
+                                        pointer-events: initial;
+                                    }
+                                }
+                                .page-link {
+                                    font-size: 17px;
+                                    color: rgba(0, 0, 0, 0.54);
+                                    border-color: transparent;
+                                    padding: 0 7px;
+                                    display: inline-block;
+                                    -webkit-font-smoothing: antialiased;
+                                    -moz-osx-font-smoothing: grayscale;
+                                    height: 26px;
+                                    width: 25px;
+                                    &:hover{
+                                        background-color : transparent !important;
+                                    }
+                                    span {
+                                        display: none;
+                                    }
+                                }
+                                &.active{
+                                    .page-link{
+                                        background-color: transparent;
+                                        color: #0275d8;
+                                    }
+                                }
+                                a[aria-label="First"] {
+                                    font: normal normal normal 24px/1 "Material Design Icons";
+                                    font-size: 24px;
+                                    padding: 0px;
+                                    color: #0275d8;
+                                    &::before {
+                                        content: "\F4AE";
+                                        visibility: visible;
+                                    }
+                                }
+                                a[aria-label="Previous"] {
+                                    font: normal normal normal 24px/1 "Material Design Icons";
+                                    font-size: 23px;
+                                    padding: 0px;
+                                    color: #0275d8;
+                                    &::before {
+                                        content: "\F141";
+                                        visibility: visible;
+                                    }
+                                }
+                                a[aria-label="Next"] {
+                                    font: normal normal normal 24px/1 "Material Design Icons";
+                                    font-size: 23px;
+                                    padding: 0px;
+                                    color: #0275d8;
+                                    &::before {
+                                        content: "\F142";
+                                        visibility: visible;
+                                    }
+                                }
+                                a[aria-label="Last"] {
+                                    display: inline-block;
+                                    font: normal normal normal 24px/1 "Material Design Icons";
+                                    font-size: 24px;
+                                    padding: 0;
+                                    color: #0275d8;
+                                    &::before {
+                                        content: "\F4AD";
+                                        visibility: visible;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .w200 {
+            width: 200px;
+        }
+        .w175 {
+            width: 175px;
+        }
+        .w150 {
+            width: 150px;
+        }
+        .w125 {
+            width: 125px;
+        }
+        .w100 {
+            width: 100px;
+        }
+        .w75 {
+            width: 75px;
+        }
+        .w50 {
+            width: 50px;
+        }
+
+    }
+    .details {
+        background: #fff;
+        padding: 15px 5px 1px 15px;
+        dt {
+            font-size: 11px;
+            margin-bottom: .5rem;
+            text-transform: uppercase;
+        }
+    }
+}
