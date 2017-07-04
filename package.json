@@ -1,6 +1,6 @@
 {
   "name": "ng-datatable-x",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Build an Angular library compatible with AoT compilation and Tree shaking",
   "main": "./bundles/ng-datatable-x.umd.js",
   "module": "./modules/ng-datatable-x.es5.js",
@@ -17,12 +17,12 @@
   "author": "",
   "repository": {
     "type": "git",
-    "url": "https://github.com/robisim74/ng-datatable-x.git"
+    "url": "https://github.com/linkstreet/ng-datatable-x"
   },
   "bugs": {
-    "url": "https://github.com/robisim74/ng-datatable-x/issues"
+    "url": "https://github.com/linkstreet/ng-datatable-x"
   },
-  "homepage": "https://github.com/robisim74/ng-datatable-x",
+  "homepage": "https://github.com/linkstreet/ng-datatable-x",
   "keywords": [
     "angular",
     "javascript",
