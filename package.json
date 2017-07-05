@@ -1,6 +1,6 @@
 {
   "name": "ng-datatable-x",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Angular 4 Datatable",
   "main": "./bundles/ng-datatable-x.umd.js",
   "module": "./modules/ng-datatable-x.es5.js",

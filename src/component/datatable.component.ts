@@ -363,11 +363,11 @@ export class DataTableX implements OnInit {
     }
     public initDataTable() {
         this.route = this.config.route;
-        if (this.route) {
         this.columns = this.config.columns;
-        let searchableCols = this.columns.filter((column: any) => { return (column.searchable === true); });
-        this.setFilterColumns(searchableCols)
-        this.pagination();
+        if (this.route) {
+            let searchableCols = this.columns.filter((column: any) => {return (column.searchable === true);});
+            this.setFilterColumns(searchableCols)
+            this.pagination();
         }
     }
     public setFilterColumns(columns: any[]) {
