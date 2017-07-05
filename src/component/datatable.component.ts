@@ -40,7 +40,7 @@ import { Observable } from 'rxjs/Rx';
                 <div class="input-group w-100">
                     <span class="input-group-addon"><i class="mdi mdi-magnify"></i></span>
                     <div class="input-group-btn" *ngIf="searchBy">
-                        <md-select name="filterColumn" placeholder="Filter By" floatPlaceholder="never" [(ngModel)]="searchBy">
+                        <md-select placeholder="Filter By" floatPlaceholder="never" [(ngModel)]="searchBy">
                             <md-option *ngFor="let item of searchItems" [value]="item.searchKey">
                                 {{ item.name }}
                         </md-option>
@@ -58,25 +58,36 @@ import { Observable } from 'rxjs/Rx';
         <table class="table">
             <thead *ngIf="config.headerVisible">
                 <tr>
+                    <th class="w50" nowrap="nowrap" *ngIf="config.selectable">
+                        <label class="custom-control custom-checkbox" >
+                            <input type="checkbox" class="custom-control-input" [checked]="selectAll" (change)="onSelectAll(selectAll)" [(ngModel)]="selectAll" >
+                            <span class="custom-control-indicator"></span>
+                        </label>
+                    </th>
+                    <th class="w50"
+                        nowrap="nowrap" *ngIf="config.expandable">
+                        <button type="button" 
+                                class="btn btn-icon-only expand-row-icon"
+                                title="Expand/Collapse All"
+                                (click)="toggleExpandAll()">
+                            <i class="mdi" [ngClass]='{"mdi-arrow-expand-all":!expandAll, "mdi-arrow-compress-all":expandAll}'></i>
+                        </button>
+                    </th>
+                    <th [attr.class]="config.serialNumber" nowrap="nowrap">
+                        Sn
+                    </th>
                 <ng-template ngFor  let-column [ngForOf]="columns">
                          <th class="{{column.class}}"
                 [ngClass]="{'cursor-pointer':column.sortable}"
                 (click)="changeSorting(column.name,column.sortable)"
                 nowrap="nowrap">
-                <ng-template [ngIf]="column.name">{{column.name}}</ng-template>
+                <ng-template [ngIf]="column.name">
+                    <span class="col-title" [innerHtml]="column.name"></span>
+                </ng-template>
                 <span *ngIf="column.sortable && sortClass(column.name)">
                     <i [class]="sortClass(column.name)"></i>
                 </span>
-                <label class="custom-control custom-checkbox" *ngIf="column.selectable">
-                    <input type="checkbox" class="custom-control-input" [checked]="selectAll" (change)="onSelectAll(selectAll)" [(ngModel)]="selectAll" >
-                    <span class="custom-control-indicator"></span>
-                </label>
-                <button type="button" *ngIf="column.expandable"
-                        class="btn btn-icon-only expand-row-icon"
-                        title="Expand/Collapse All"
-                        (click)="toggleExpandAll()">
-                    <i class="mdi" [ngClass]='{"mdi-arrow-expand-all":!expandAll, "mdi-arrow-compress-all":expandAll}'></i>
-                </button>
+                 
                 </th>
             </ng-template>
             </tr>
@@ -85,13 +96,13 @@ import { Observable } from 'rxjs/Rx';
 
             <ng-template ngFor let-n="index" let-row [ngForOf]="rows">
                 <tr>
-                    <td [attr.class]="columns[0].class">
+                    <td class="w50" *ngIf="config.selectable">
                         <label class="custom-control custom-checkbox">
                             <input type="checkbox" class="custom-control-input" [checked]="row.selected" (change)="onCheckboxChange(row)" >
                             <span class="custom-control-indicator"></span>
                         </label>
                     </td>
-                    <td [attr.class]="columns[1].class">
+                    <td class="w50" *ngIf="config.expandable">
                         <button type="button"
                                 class="btn btn-icon-only expand-row-icon"
                                 title="Expand/Collapse Row"
@@ -99,14 +110,14 @@ import { Observable } from 'rxjs/Rx';
                             <i class="mdi" [ngClass]='{"mdi-chevron-right":!row.expanded, "mdi-chevron-down":row.expanded}'></i>
                         </button>
                     </td>
-                    <td [attr.class]="columns[2].class">
+                    <td [attr.class]="config.serialNumber">
                         {{(n +1) + rowsIndex}}
                     </td>
 
                 <ng-template [ngTemplateOutlet]="rowGroups" [ngOutletContext]="{ $implicit: row }"></ng-template>
                 </tr>
                 <tr class="expand-row" *ngIf="row.expanded">
-                    <td colspan="10">
+                    <td [attr.colspan]="columns.length + 3">
                         <div class="card-block bg-faded">
                             <div class='details'>
                                 <ng-template [ngTemplateOutlet]="rowDetails" [ngOutletContext]="{ $implicit: row }"></ng-template>
@@ -116,12 +127,12 @@ import { Observable } from 'rxjs/Rx';
                 </tr>
             </ng-template>
             <tr class="no-reults-found text-center" *ngIf="rows.length === 0 && dataLoaded">
-                <td [attr.colspan]="columns.length" [innerHtml]="config.emptyMessage"></td>
+                <td [attr.colspan]="columns.length + 3" [innerHtml]="config.emptyMessage"></td>
             </tr>
             </tbody>
             <tfoot *ngIf="count">
                 <tr>
-                    <td [attr.colspan]="columns.length">
+                    <td [attr.colspan]="columns.length + 3">
                         <div class="dt-footer">
                             <div class="d-flex justify-content-between">
                                 <div class="text-left">
@@ -147,59 +158,225 @@ import { Observable } from 'rxjs/Rx';
     </div>
 </div>`
 ,
-    styleUrls: ['./datatable.component.scss'],
+    styles: [`
+.datatable {
+position: relative;
+width: 100%; }
+.datatable .table {
+margin: 0; }
+.datatable .table tr th, .datatable .table tr td {
+vertical-align: middle;
+padding: .75em; }
+.datatable .table tr th:first-child, .datatable .table tr td:first-child {
+padding-left: 20px; }
+.datatable .table tr th .expand-row-icon, .datatable .table tr td .expand-row-icon {
+padding: 0; }
+.datatable .table tr th .expand-row-icon:hover, .datatable .table tr td .expand-row-icon:hover {
+color: #0275d8 !important; }
+.datatable .table tr th .custom-checkbox.custom-control, .datatable .table tr td .custom-checkbox.custom-control {
+margin: -.75em 0 0 0;
+vertical-align: middle;
+padding-left: 18px; }
+.datatable .table tr th {
+font-size: 12px;
+font-family: 'mulibold', 'Helvetica Neue', sans-serif;
+color: rgba(0, 0, 0, 0.38);
+text-transform: uppercase;
+border: 0px; }
+.datatable .table tr th .expand-row-icon {
+color: rgba(0, 0, 0, 0.38); }
+.datatable .table tr th .sort-icon {
+font-size: 13px; }
+.datatable .table tr td {
+font-family: 'muliregular', 'Helvetica Neue', sans-serif;
+font-size: 13px; }
+.datatable .table tr td.active {
+color: #4a90e2;
+font-family: 'mulibold', 'Helvetica Neue', sans-serif; }
+.datatable .table tr td .mat-icon-button {
+height: 24px;
+line-height: 24px; }
+.datatable .table tr td .mat-icon-button .mat-button-focus-overlay, .datatable .table tr td .mat-icon-button .mat-button-ripple {
+display: none !important; }
+.datatable .table tr td .mat-icon-button:hover {
+color: #0275d8; }
+.datatable .table tr td .mat-icon-button .mat-icon {
+font-size: 24px; }
+.datatable .table tr td .mat-icon-button:focus {
+outline: none !important; }
+.datatable .table tr:hover td.cursor-pointer {
+color: #4a90e2; }
+.datatable .table tr.expand-row .card-block {
+padding: 10px; }
+.datatable .table tr.expand-row > td {
+padding: 0; }
+.datatable .table tr.expand-row > td td {
+border-top: 0; }
+.datatable .table tr.no-reults-found td {
+padding: 50px 10px 30px 10px; }
+.datatable .table tr.no-reults-found h5 {
+color: rgba(0, 0, 0, 0.87); }
+.datatable .table tr.no-reults-found p {
+font-size: 16px;
+color: rgba(0, 0, 0, 0.54); }
+.datatable .table tfoot td {
+font-size: 12px;
+font-family: 'mulibold', 'Helvetica Neue', sans-serif;
+color: rgba(0, 0, 0, 0.38);
+text-transform: uppercase; }
+.datatable .table tfoot td:first-child {
+padding: 0; }
+.datatable .table tfoot td .dt-footer {
+padding: 15px 0; }
+.datatable .table tfoot td .dt-footer .show_per_page, .datatable .table tfoot td .dt-footer .show_total_count {
+display: none;
+padding: 0px 20px;
+font-family: 'mulibold', 'Helvetica Neue', sans-serif; }
+.datatable .table tfoot td .dt-footer .show_per_page .mat-select, .datatable .table tfoot td .dt-footer .show_total_count .mat-select {
+display: inline-block !important;
+padding-left: 5px;
+vertical-align: super; }
+.datatable .table tfoot td .dt-footer .show_per_page .mat-select .mat-select-value, .datatable .table tfoot td .dt-footer .show_total_count .mat-select .mat-select-value {
+font-family: 'mulisemibold', 'Helvetica Neue', sans-serif; }
+.datatable .table tfoot td .dt-footer .show_per_page .mat-select .mat-select-trigger, .datatable .table tfoot td .dt-footer .show_total_count .mat-select .mat-select-trigger {
+min-width: 40px; }
+.datatable .table tfoot td .dt-footer .show_per_page .mat-select .mat-select-underline, .datatable .table tfoot td .dt-footer .show_total_count .mat-select .mat-select-underline {
+display: none; }
+.datatable .table tfoot td .dt-footer .show_total_count {
+display: block; }
+.datatable .table tfoot td .dt-footer ngb-pagination {
+display: block; }
+.datatable .table tfoot td .dt-footer ngb-pagination .pagination {
+margin-bottom: 0;
+padding: 0 20px; }
+.datatable .table tfoot td .dt-footer ngb-pagination .pagination .page-item.disabled .page-link {
+color: #b7b7b7;
+cursor: no-drop;
+pointer-events: initial; }
+.datatable .table tfoot td .dt-footer ngb-pagination .pagination .page-item .page-link {
+font-size: 17px;
+color: rgba(0, 0, 0, 0.54);
+border-color: transparent;
+padding: 0 7px;
+display: inline-block;
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+height: 26px;
+width: 25px; }
+.datatable .table tfoot td .dt-footer ngb-pagination .pagination .page-item .page-link:hover {
+background-color: transparent !important; }
+.datatable .table tfoot td .dt-footer ngb-pagination .pagination .page-item .page-link span {
+display: none; }
+.datatable .table tfoot td .dt-footer ngb-pagination .pagination .page-item.active .page-link {
+background-color: transparent;
+color: #0275d8; }
+.datatable .table tfoot td .dt-footer ngb-pagination .pagination .page-item a[aria-label="First"] {
+font: normal normal normal 24px/1 "Material Design Icons";
+font-size: 24px;
+padding: 0px;
+color: #0275d8; }
+.datatable .table tfoot td .dt-footer ngb-pagination .pagination .page-item a[aria-label="First"]::before {
+content: "\\F4AE";
+visibility: visible; }
+.datatable .table tfoot td .dt-footer ngb-pagination .pagination .page-item a[aria-label="Previous"] {
+font: normal normal normal 24px/1 "Material Design Icons";
+font-size: 23px;
+padding: 0px;
+color: #0275d8; }
+.datatable .table tfoot td .dt-footer ngb-pagination .pagination .page-item a[aria-label="Previous"]::before {
+content: "\\F141";
+visibility: visible; }
+.datatable .table tfoot td .dt-footer ngb-pagination .pagination .page-item a[aria-label="Next"] {
+font: normal normal normal 24px/1 "Material Design Icons";
+font-size: 23px;
+padding: 0px;
+color: #0275d8; }
+.datatable .table tfoot td .dt-footer ngb-pagination .pagination .page-item a[aria-label="Next"]::before {
+content: "\\F142";
+visibility: visible; }
+.datatable .table tfoot td .dt-footer ngb-pagination .pagination .page-item a[aria-label="Last"] {
+display: inline-block;
+font: normal normal normal 24px/1 "Material Design Icons";
+font-size: 24px;
+padding: 0;
+color: #0275d8; }
+.datatable .table tfoot td .dt-footer ngb-pagination .pagination .page-item a[aria-label="Last"]::before {
+content: "\\F4AD";
+visibility: visible; }
+.datatable .table .w200 {
+width: 200px; }
+.datatable .table .w175 {
+width: 175px; }
+.datatable .table .w150 {
+width: 150px; }
+.datatable .table .w125 {
+width: 125px; }
+.datatable .table .w100 {
+width: 100px; }
+.datatable .table .w75 {
+width: 75px; }
+.datatable .table .w50 {
+width: 50px; }
+.datatable .details {
+background: #fff;
+padding: 15px 5px 1px 15px; }
+.datatable .details dt {
+font-size: 11px;
+margin-bottom: .5rem;
+text-transform: uppercase; }
+`],
     encapsulation: ViewEncapsulation.None
 })
 export class DataTableX implements OnInit {
-    @Input() config: any;
-    columns: any[];
-    route: any;
-    @ContentChild('tablerow') tablerow: TemplateRef<any>;
-    @ContentChild('rowGroups') rowGroups: TemplateRef<any>;
-    @ContentChild('rowDetails') rowDetails: TemplateRef<any>;
-    @ContentChild('selectedBtnsGroups') selectedBtnsGroups: TemplateRef<any>;
-    @ContentChild('btnGroups') btnGroups: TemplateRef<any>;
-    watchSuccess: Subject<any> = new Subject();
-    params: URLSearchParams = new URLSearchParams();
-    rowsIndex: number = 0;
-    rows: any = [];
-    count = 0;
-    page: any = 1;
-    limit: any = 15;
-    dataLoaded = false;
-    expandAll = false;
-    selectAll = false;
-    selectedCount = 0;
-    searchItems: any = [];
-    searchBy: any;
-    sort: any;
-    sorting: any = {};
-    enableSearch = false;
-    searchValue = '';
-    totalRecords: any;
+    @Input() public config: any;
+    public columns: any[];
+    public route: any;
+    @ContentChild('tablerow') public tablerow: TemplateRef<any>;
+    @ContentChild('rowGroups') public rowGroups: TemplateRef<any>;
+    @ContentChild('rowDetails') public rowDetails: TemplateRef<any>;
+    @ContentChild('selectedBtnsGroups') public selectedBtnsGroups: TemplateRef<any>;
+    @ContentChild('btnGroups') public btnGroups: TemplateRef<any>;
+    public watchSuccess: Subject<any> = new Subject();
+    public params: URLSearchParams = new URLSearchParams();
+    public rowsIndex: number = 0;
+    public rows: any = [];
+    public count = 0;
+    public page: any = 1;
+    public limit: any = 15;
+    public dataLoaded = false;
+    public expandAll = false;
+    public selectAll = false;
+    public selectedCount = 0;
+    public searchItems: any = [];
+    public searchBy: any;
+    public sort: any;
+    public sorting: any = {};
+    public enableSearch = false;
+    public searchValue = '';
+    public totalRecords: any;
     private http: Http;
     constructor(@Inject(Http) http: Http) {
        this.http = http;
     }
-    ngOnInit() {
+    public ngOnInit() {
         this.initDataTable();
     }
-    initDataTable() {
+    public initDataTable() {
         this.route = this.config.route;
         if (this.route) {
         this.columns = this.config.columns;
-        let searchableCols = this.columns.filter((column: any) => {return (column.searchable === true);});
+        let searchableCols = this.columns.filter((column: any) => { return (column.searchable === true); });
         this.setFilterColumns(searchableCols)
         this.pagination();
         }
     }
-    setFilterColumns(columns: any[]) {
+    public setFilterColumns(columns: any[]) {
         this.searchItems = columns;
         if (columns && columns.length) {
             this.searchBy = columns[0].searchKey;
         }
     }
-    pagination() {
+    public pagination() {
         this.dataLoaded = false;
         if (this.page === 1) {
             this.rowsIndex = 0;
@@ -220,10 +397,9 @@ export class DataTableX implements OnInit {
             this.watchSuccess.next();
         }, (err) => {
             this.dataLoaded = true;
-            console.log('Datatable Error ', err);
         });
     }
-    get() {
+    public get() {
         return this.http.get(this.route, {
             search: this.params,
             headers: this.config.httpHeaders
@@ -236,43 +412,43 @@ export class DataTableX implements OnInit {
                 return this.handleError(err);
             });
     }
-    handleSuccess(data: any) {
+    public handleSuccess(data: any) {
         return data;
     }
-    handleError(error: any) {
+    public handleError(error: any) {
         return error;
     }
-    onPage(event: any) {
+    public onPage(event: any) {
         this.selectedCount = 0;
         this.selectAll = false;
         this.page = event;
         this.pagination();
     }
-    onSearch(event: any) {
+    public onSearch(event: any) {
         const val = event.target.value;
         this.params.set('search', val);
         this.params.set('search_by', this.searchBy);
         this.page = 1;
         this.pagination();
     }
-    clearSearch() {
+    public clearSearch() {
         this.enableSearch = !this.enableSearch;
         this.searchValue = '';
         this.params.set('search', '');
         this.page = 1;
         this.pagination();
     }
-    sortClass(columnName: any): any {
+    public sortClass(columnName: any): any {
         if (columnName === this.sorting.column) {
             return this.sorting.ascending ? 'sort-icon mdi mdi-arrow-down' : 'sort-icon mdi mdi-arrow-up';
         } else {
             return;
         }
     }
-    changeSorting(columnName: any, sortable: any): void {
+    public changeSorting(columnName: any, sortable: any): void {
         if (sortable) {
             let sort = this.sorting;
-            if (sort.column == columnName) {
+            if (sort.column === columnName) {
                 sort.ascending = !sort.ascending;
             } else {
                 sort.column = columnName;
@@ -284,22 +460,21 @@ export class DataTableX implements OnInit {
             this.pagination();
         }
     }
-
-    showPerPage(val: any) {
+    public showPerPage(val: any) {
         this.searchValue = '';
         this.params.set('search', '');
         this.limit = val;
         this.page = 1;
         this.pagination();
     }
-    toggleExpandAll() {
+    public toggleExpandAll() {
         this.expandAll = !this.expandAll;
         let expand = this.expandAll;
         this.rows.forEach(function (obj: any) {
             obj.expanded = expand;
         });
     }
-    onCheckboxChange(row: any): void {
+    public onCheckboxChange(row: any): void {
         this.rows.forEach(function (obj: any) {
             if (obj === row) {
                 obj.selected = !obj.selected;
@@ -307,18 +482,18 @@ export class DataTableX implements OnInit {
         });
         this.selectedCount = this.getSelected().length;
     }
-    getSelected() {
+    public getSelected() {
         let selected = this.rows.filter((x: any) => x.selected);
         return selected;
     }
-    onSelectAll(selectAll: any) {
+    public onSelectAll(selectAll: any) {
         this.selectAll = selectAll;
         this.rows.forEach(function (obj: any) {
             obj.selected = selectAll;
         });
         this.selectedCount = this.getSelected().length;
     }
-    refresh() {
+    public refresh() {
         this.onSelectAll(false);
         this.pagination();
     }
