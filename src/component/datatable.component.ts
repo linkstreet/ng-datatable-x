@@ -210,8 +210,6 @@ color: #4a90e2; }
 padding: 10px; }
 .datatable .table tr.expand-row > td {
 padding: 0; }
-.datatable .table tr.expand-row > td td {
-border-top: 0; }
 .datatable .table tr.no-reults-found td {
 padding: 50px 10px 30px 10px; }
 .datatable .table tr.no-reults-found h5 {

@@ -1,6 +1,6 @@
 {
-  "name": "ng-datatable-x",
-  "version": "0.0.7",
+  "name": "@linkstreet/ng-datatable-x",
+  "version": "0.0.9",
   "description": "Angular 4 Datatable",
   "main": "./bundles/ng-datatable-x.umd.js",
   "module": "./modules/ng-datatable-x.es5.js",
@@ -17,7 +17,7 @@
   "author": "Akhilesh Bamhore",
   "repository": {
     "type": "git",
-    "url": "https://github.com/linkstreet/ng-datatable-x"
+    "url": "git+https://github.com/linkstreet/ng-datatable-x.git"
   },
   "bugs": {
     "url": "https://github.com/linkstreet/ng-datatable-x"
@@ -78,5 +78,6 @@
     "webpack": "3.0.0",
     "yargs": "8.0.2",
     "zone.js": "0.8.12"
-  }
+  },
+  "dependencies": {}
 }
