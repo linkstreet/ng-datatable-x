@@ -4,6 +4,17 @@
 It was built for modern browsers using _TypeScript, CSS3 and HTML5_ and Angular `>=4.0.0`.
 
 See the [changelog](https://github.com/linkstreet/ng-datatable-x/blob/master/CHANGELOG.md) for recent changes.
+### Screenshots
+![DataTable Users List](screenshots/users.png)
+![DataTable Users List](screenshots/users-expand.png)
+![DataTable Users List](screenshots/users-select.png)
+![DataTable Users List](screenshots/users-small.png)
+![DataTable Users List](screenshots/users-search.png)
+![DataTable Users List](screenshots/users-action.png)
+![DataTable Users List](screenshots/table-responsive.png)
+
+### Demo
+Coming Soon
 
 ### Installation
 

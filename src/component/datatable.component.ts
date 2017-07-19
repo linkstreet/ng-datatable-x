@@ -79,13 +79,13 @@ import { Observable } from 'rxjs/Rx';
                 <ng-template ngFor  let-column [ngForOf]="columns">
                          <th class="{{column.class}}"
                 [ngClass]="{'cursor-pointer':column.sortable}"
-                (click)="changeSorting(column.name,column.sortable)"
+                (click)="changeSorting(column.searchKey,column.sortable)"
                 nowrap="nowrap">
                 <ng-template [ngIf]="column.name">
                     <span class="col-title" [innerHtml]="column.name"></span>
                 </ng-template>
-                <span *ngIf="column.sortable && sortClass(column.name)">
-                    <i [class]="sortClass(column.name)"></i>
+                <span *ngIf="column.sortable && sortClass(column.searchKey)">
+                    <i [class]="sortClass(column.searchKey)"></i>
                 </span>
                  
                 </th>
@@ -356,7 +356,7 @@ export class DataTableX implements OnInit {
     constructor(@Inject(Http) http: Http) {
        this.http = http;
     }
-    public ngOnInit() {
+    public ngOnInit () {
         this.initDataTable();
     }
     public initDataTable() {
@@ -385,14 +385,16 @@ export class DataTableX implements OnInit {
         this.params.set('limit', this.limit);
         this.get().subscribe(data => {
             this.dataLoaded = true;
-            this.count = data.pagination.total;
+            if (data && data.pagination) {
+                this.count = data.pagination.total;
+            }
             this.rows = data.list;
             this.totalRecords = 'TOTAL: ' + this.count;
             if (this.expandAll) {
                 this.expandAll = false;
                 this.toggleExpandAll();
             }
-            this.watchSuccess.next();
+            this.watchSuccess.next(data);
         }, (err) => {
             this.dataLoaded = true;
         });
@@ -444,7 +446,7 @@ export class DataTableX implements OnInit {
         }
     }
     public changeSorting(columnName: any, sortable: any): void {
-        if (sortable) {
+        if (sortable && columnName) {
             let sort = this.sorting;
             if (sort.column === columnName) {
                 sort.ascending = !sort.ascending;
@@ -452,8 +454,10 @@ export class DataTableX implements OnInit {
                 sort.column = columnName;
                 sort.ascending = true;
             }
-            this.params.set('sortby', columnName);
-            this.params.set('sortprop', sort.ascending);
+            if (!sort.ascending) {
+                columnName = '-' + columnName;
+            }
+            this.params.set('sort_by', columnName);
             this.page = 1;
             this.pagination();
         }
