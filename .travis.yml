@@ -8,17 +8,16 @@ addons:
       - google-chrome-stable
 language: node_js
 node_js:
-  - stable
-before_install:
-  - npm i npm@^4 -g
-install:
-  - npm install
+  - node
 script:
-  - npm test
-  - npm run build
+  - npm run ci
 before_script:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
   - sleep 3
+cache:
+  yarn: true
 notifications:
   email: false
+after_success:
+  - npm run codecov

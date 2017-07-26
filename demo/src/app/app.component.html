@@ -1,0 +1,106 @@
+
+<div class="p-4">
+    <h3 class="page-title mb-3">NgDataTableX</h3>
+    <div class="card">
+        <ng-datatable-x #dataTable [config]="dtInfo">
+            <ng-template #selectedBtnsGroups>
+                <button type="button" class="btn btn-icon-only btn-icon-lg"
+                        ngbTooltip="Delete" container="body">
+                    <i class="mdi mdi-delete"></i>
+                </button>
+            </ng-template>
+            <ng-template #btnGroups>
+                <button class="btn btn-sm align-middle btn-outline-primary" type="button">
+                    <i class="mdi mdi-plus"></i> Add User
+                </button>
+            </ng-template>
+            <ng-template #rowGroups let-row>
+                <td [attr.class]="columns[0].class">
+                    {{row.first_name}} {{row.last_name}}
+                </td>
+                <td [attr.class]="columns[1].class">
+                    {{row.email}}
+                </td>
+                <td [attr.class]="columns[2].class">
+                    {{row.mobile_number}}
+                </td>
+                <td [attr.class]="columns[3].class">
+                    {{row.created_at | date: 'dd MMM y'}}
+                </td>
+                <td [attr.class]="columns[4].class"> 
+                    <span class="badge badge-info">{{row.role}}</span>
+                </td>
+                <td [attr.class]="columns[5].class">
+                    <span class="badge" [ngClass]="{'badge-success':(row.status=='ACTIVE'),'badge-danger':(row.status=='INACTIVE'),'badge-danger':(row.status=='PENDING')}">{{row.status}}</span>
+                </td>
+                <td [attr.class]="columns[6].class">
+                <md-menu #menu="mdMenu">
+                    <button md-menu-item *ngIf="row.status=='PENDING'" (click)="inviteUser('single',row.user_id)">
+                            <i class="mat-icon mdi mdi-send"></i>
+                        <span class="align-middle">Invite</span>
+                    </button>
+                    <button md-menu-item (click)="editUser('edit',row.user_id)">
+                            <i class="mat-icon mdi mdi-lead-pencil"></i>
+                        <span class="align-middle">Edit User</span>
+                    </button>
+                    <button md-menu-item (click)="deleteUser('single',row.user_id)">
+                            <i class="mat-icon mdi mdi-delete"></i>
+                        <span class="align-middle">Delete User</span>
+                    </button>
+                </md-menu>
+                <div class="text-center">
+                    <button md-icon-button [mdMenuTriggerFor]="menu">
+                            <i class="mat-icon mdi mdi-dots-vertical"></i>
+                    </button>
+                </div>
+                </td>
+            </ng-template>
+            <ng-template #rowDetails let-row>
+                <div class="row">
+                    <div class="col-md-6">
+                        <dl class="row">
+                            <dt class="col-sm-6">Full Name</dt>
+                            <dd class="col-sm-6">{{row.first_name}} {{row.last_name}}</dd>
+                            <dt class="col-sm-6">Email</dt>
+                            <dd class="col-sm-6">{{row.email}}</dd>
+                            <dt class="col-sm-6">Mobile No</dt>
+                            <dd class="col-sm-6">{{row.mobile_number}}</dd>
+                            <dt class="col-sm-6">Mobile verified</dt>
+                            <dd class="col-sm-6">
+                                <span *ngIf='row.is_mobile_verified' class='b-badge true'> 
+                                    <i class='mdi mdi-check-circle'></i> 
+                                </span> 
+                                <span *ngIf='!row.is_mobile_verified' class='b-badge false'> 
+                                    <i class='mdi mdi-close-circle'></i> 
+                                </span>
+                            </dd>
+                            <dt class="col-sm-6">Email verified</dt>
+                            <dd class="col-sm-6"> 
+                                <span *ngIf='row.is_email_verified' class='b-badge true'> 
+                                    <i class='mdi mdi-check-circle'></i> 
+                                </span> 
+                                <span *ngIf='!row.is_email_verified' class='b-badge false'> 
+                                    <i class='mdi mdi-close-circle'></i> 
+                                </span> 
+                            </dd>
+                            <dt class="col-sm-6">Role</dt>
+                            <dd class="col-sm-6"> 
+                                <span class="badge badge-info">{{row.role}}</span>
+                            </dd>
+                            <dt class="col-sm-6">Status</dt>
+                            <dd class="col-sm-6"> 
+                                <span class="badge" [ngClass]="{'badge-success':(row.status=='ACTIVE'),'badge-danger':(row.status=='INACTIVE'),'badge-danger':(row.status=='PENDING')}">{{row.status}}</span>
+                            </dd>
+                            <dt class="col-sm-6">Language</dt>
+                            <dd class="col-sm-6">{{row.language}}</dd>
+                            <dt class="col-sm-6">Added On</dt>
+                            <dd class="col-sm-6">{{row.created_at | date: 'dd MMM y'}}</dd>
+                            <dt class="col-sm-6" *ngIf="row.invited_at">Last Invited</dt>
+                            <dd class="col-sm-6" *ngIf="row.invited_at">{{row.invited_at | date: 'dd MMM y'}}</dd>
+                        </dl>
+                    </div>
+                </div>
+            </ng-template>
+        </ng-datatable-x>
+    </div>
+</div>

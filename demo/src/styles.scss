@@ -1,0 +1,109 @@
+/* You can add global styles to this file, and also import other style files */
+@import '../node_modules/bootstrap/scss/bootstrap';
+@import '~@angular/material/theming';
+@include mat-core();
+$primary: mat-palette($mat-blue, 700, 500, 900);
+$accent: mat-palette($mat-blue, A200, A100, A400);
+$theme: mat-light-theme($primary, $accent);
+@include angular-material-theme($theme);
+@font-face {
+    font-family: 'muliregular';
+    src: url('./assets/fonts/muli-webfont.woff2') format('woff2'),
+        url('./assets/fonts/muli-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'mulibold';
+    src: url('./assets/fonts/muli-bold-webfont.woff2') format('woff2'),
+        url('./assets/fonts/muli-bold-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'mulisemibold';
+    src: url('./assets/fonts/muli-semibold-webfont.woff2') format('woff2'),
+        url('./assets/fonts/muli-semibold-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'mulilight';
+    src: url('./assets/fonts/muli-light-webfont.woff2') format('woff2'),
+        url('./assets/fonts/muli-light-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+body {
+    background-color: #f2f2f2;
+}
+.card {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .2), 0 1px 1px 0 rgba(0, 0, 0, .14), 0 2px 1px -1px rgba(0, 0, 0, .12);
+  border: 0;
+  .card-header {
+    background-color: #fff;
+    border: 0;
+  }
+}
+.tab-content-dt {
+    width: 100%;
+    min-height: 195px;
+    &.loading-dt {
+        background: url('./assets/loading.svg') center no-repeat;
+        tbody, form {
+            opacity: .12;
+        }
+    }
+}
+.custom-checkbox {
+  .custom-control-indicator {
+    top: 50%;
+    margin-top: -4px;
+    width: 17px;
+    height: 17px;
+    border: 1px solid rgba(0, 0, 0, .42);
+    background-color: #fff;
+    border-radius: 0;
+    box-sizing: border-box;
+  }
+}
+.btn-icon-only {
+    border-radius: 0;
+    outline: 0;
+    box-shadow: none;
+    cursor: pointer;
+    background: transparent;
+    font-size: 18px;
+    padding: 0 10px;
+    &.btn-icon-lg {
+        font-size: 24px;
+    }
+    &:focus {
+        outline: 0;
+        box-shadow: none;
+    }
+}
+.datatable .table tfoot td .dt-footer ngb-pagination .pagination .page-item .page-link {
+    padding: 1px 7px!important;
+}
+.input-group-btn {
+    border: 1px solid rgba(0, 0, 0, .15);
+    border-right: 0;
+    background: #fff;
+    .mat-select {
+        padding: 0 10px;
+        .mat-floating-placeholder {
+            visibility: hidden;
+        }
+        .mat-select-underline {
+            display: none;
+        }
+    }
+}
