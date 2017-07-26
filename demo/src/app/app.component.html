@@ -31,7 +31,7 @@
                     <span class="badge badge-info">{{row.role}}</span>
                 </td>
                 <td [attr.class]="columns[5].class">
-                    <span class="badge" [ngClass]="{'badge-success':(row.status=='ACTIVE'),'badge-danger':(row.status=='INACTIVE'),'badge-danger':(row.status=='PENDING')}">{{row.status}}</span>
+                    <span class="badge" [ngClass]="{'badge-success':(row.status=='ACTIVE'),'badge-danger':(row.status=='INACTIVE'),'badge-warning':(row.status=='PENDING')}">{{row.status}}</span>
                 </td>
                 <td [attr.class]="columns[6].class">
                 <md-menu #menu="mdMenu">
@@ -89,7 +89,7 @@
                             </dd>
                             <dt class="col-sm-6">Status</dt>
                             <dd class="col-sm-6"> 
-                                <span class="badge" [ngClass]="{'badge-success':(row.status=='ACTIVE'),'badge-danger':(row.status=='INACTIVE'),'badge-danger':(row.status=='PENDING')}">{{row.status}}</span>
+                                <span class="badge" [ngClass]="{'badge-success':(row.status=='ACTIVE'),'badge-danger':(row.status=='INACTIVE'),'badge-warning':(row.status=='PENDING')}">{{row.status}}</span>
                             </dd>
                             <dt class="col-sm-6">Language</dt>
                             <dd class="col-sm-6">{{row.language}}</dd>

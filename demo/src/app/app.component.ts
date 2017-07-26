@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { DataTableX } from '@linkstreet/ng-datatable-x';
+import { DataTableXComponent } from '@linkstreet/ng-datatable-x';
 import 'rxjs/Rx';
 
 @Component({
@@ -9,7 +9,7 @@ import 'rxjs/Rx';
 })
 export class AppComponent {
   title = 'app';
-  @ViewChild('dataTable') dt: DataTableX;
+  @ViewChild('dataTable') dt: DataTableXComponent;
   columns: any = [
         {name: 'Name', sortable: true, class: '', searchable: true, searchKey: 'first_name'},
         {name: 'Email', sortable: true, class: 'hidden-md-down', searchable: true, searchKey: 'email'},
