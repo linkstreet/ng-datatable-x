@@ -49,6 +49,10 @@ export class DataTableXComponent implements OnInit {
         if (this.route) {
             const searchableCols = this.columns.filter((column: any) => (column.searchable === true));
             this.setFilterColumns(searchableCols);
+            const index = this.config.defaultSortColumnIndex;
+            if (index != null && index >= 0) {
+                this.setDefaultSorting(this.columns[index].searchKey, this.columns[index].sortable);
+            }
             this.pagination();
         }
     }
@@ -148,6 +152,14 @@ export class DataTableXComponent implements OnInit {
             this.pagination();
         }
     }
+    public setDefaultSorting(columnName: any, sortable: any) {
+        if (sortable && columnName) {
+            this.sorting.ascending = true;
+            this.sorting.column = columnName;
+            this.params.set('sort_by', columnName);
+            this.sortClass(columnName);
+        }
+    }
     public showPerPage(val: any) {
         this.searchValue = '';
         this.params.set('search', '');
@@ -182,6 +194,13 @@ export class DataTableXComponent implements OnInit {
     }
     public refresh() {
         this.onSelectAll(false);
+        const index = this.config.defaultSortColumnIndex;
+        if (index != null && index >= 0) {
+            this.setDefaultSorting(this.columns[index].searchKey, this.columns[index].sortable);
+        } else {
+            this.sorting.column = '';
+            this.params.delete('sort_by');
+        }
         this.pagination();
     }
 }
