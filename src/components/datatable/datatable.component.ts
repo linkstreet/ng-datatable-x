@@ -112,17 +112,20 @@ export class DataTableXComponent implements OnInit {
         this.page = event;
         this.pagination();
     }
-    public onSearch(event: any) {
-        const val = event.target.value;
-        this.params.set('search', val);
-        this.params.set('search_by', this.searchBy);
+    public onSearch($event: any) {
+        for (const item of this.searchItems) {
+            this.params.delete('filter[' + item.searchKey + ']');
+        }
+        this.params.set('filter[' + this.searchBy + ']', $event.target.value);
         this.page = 1;
         this.pagination();
     }
     public clearSearch() {
         this.enableSearch = !this.enableSearch;
         this.searchValue = '';
-        this.params.set('search', '');
+        for (const item of this.searchItems) {
+            this.params.delete('filter[' + item.searchKey + ']');
+        }
         this.page = 1;
         this.pagination();
     }
