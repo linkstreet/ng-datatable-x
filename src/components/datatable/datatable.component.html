@@ -32,11 +32,13 @@
                 <div class="input-group w-100">
                     <span class="input-group-addon"><i class="mdi mdi-magnify"></i></span>
                     <div class="input-group-btn" *ngIf="searchBy">
-                        <md-select placeholder="Filter By" floatPlaceholder="never" [(ngModel)]="searchBy">
-                            <md-option *ngFor="let item of searchItems" [value]="item.searchKey">
-                                {{ item.name }}
-                        </md-option>
-                    </md-select>
+                        <mat-form-field>
+                            <mat-select placeholder="Filter By" floatPlaceholder="never" [(ngModel)]="searchBy">
+                                <mat-option *ngFor="let item of searchItems" [value]="item.searchKey">
+                                    {{ item.name }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
                 <input type="text" class="form-control" placeholder="Search" autofocus [(ngModel)]="searchValue" (keyup)='onSearch($event)'>
                        <span (click)="clearSearch();" class="input-group-addon cursor-pointer"><i class="mdi mdi-close"></i></span>
@@ -130,9 +132,11 @@
                                 <div class="text-left">
                                     <div class="show_per_page">
                                         Show
-                                        <md-select floatPlaceholder="never" (change)="showPerPage(limit)" [(ngModel)]="limit">
-                                            <md-option [value]="15">15</md-option>
-                                        </md-select>
+                                        <mat-form-field>
+                                            <mat-select floatPlaceholder="never" (change)="showPerPage(limit)" [(ngModel)]="limit">
+                                                <mat-option [value]="15">15</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
                                     </div>
                                     <div class="show_total_count">
                                         {{ totalRecords }}
