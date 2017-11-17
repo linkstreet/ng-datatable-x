@@ -121,7 +121,8 @@
                 </tr>
             </ng-template>
             <tr class="no-reults-found text-center" *ngIf="rows.length === 0 && dataLoaded">
-                <td [attr.colspan]="columns.length + 3" [innerHtml]="config.emptyMessage"></td>
+                <td *ngIf="!searchValue" [attr.colspan]="columns.length + 3" [innerHtml]="config.emptyMessage"></td>
+                <td *ngIf="searchValue" [attr.colspan]="columns.length + 3">No search results found.</td>
             </tr>
             </tbody>
             <tfoot *ngIf="count">
