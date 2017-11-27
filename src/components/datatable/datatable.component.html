@@ -108,13 +108,13 @@
                         {{(n +1) + rowsIndex}}
                     </td>
 
-                <ng-template [ngTemplateOutlet]="rowGroups" [ngOutletContext]="{ $implicit: row }"></ng-template>
+                <ng-template [ngTemplateOutlet]="rowGroups" [ngTemplateOutletContext]="{ $implicit: row }"></ng-template>
                 </tr>
                 <tr class="expand-row" *ngIf="row.expanded">
                     <td [attr.colspan]="columns.length + 3">
                         <div class="card-block bg-faded">
                             <div class='details'>
-                                <ng-template [ngTemplateOutlet]="rowDetails" [ngOutletContext]="{ $implicit: row }"></ng-template>
+                                <ng-template [ngTemplateOutlet]="rowDetails" [ngTemplateOutletContext]="{ $implicit: row }"></ng-template>
                             </div>
                         </div>
                     </td>
