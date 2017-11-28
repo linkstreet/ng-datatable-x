@@ -41,7 +41,7 @@ export class DataTableXComponent implements OnInit {
         this.http = http;
     }
     public ngOnInit() {
-        // this.initDataTable();
+        this.initDataTable();
     }
     public initDataTable() {
         this.route = this.config.route;
@@ -71,6 +71,7 @@ export class DataTableXComponent implements OnInit {
         }
         this.params.page = this.page;
         this.params.limit = this.limit;
+        console.log(this.params);
         this.get().subscribe((data) => {
             this.dataLoaded = true;
             if (data && data.pagination) {
@@ -113,15 +114,19 @@ export class DataTableXComponent implements OnInit {
         this.pagination();
     }
     public onSearch($event: any) {
-        delete this.params.filter;
-        this.params.filter[this.searchBy] = $event.target.value;
+        for (const item of this.searchItems) {
+            delete this.params['filter[' + item.searchKey + ']'];
+        }
+        this.params['filter[' + this.searchBy + ']'] = $event.target.value;
         this.page = 1;
         this.pagination();
     }
     public clearSearch() {
         this.enableSearch = !this.enableSearch;
         this.searchValue = '';
-        delete this.params.filter;
+        for (const item of this.searchItems) {
+            delete this.params['filter[' + item.searchKey + ']'];
+        }
         this.page = 1;
         this.pagination();
     }
