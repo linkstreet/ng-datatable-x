@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { By } from '@angular/platform-browser';
 
 import { NgDataTableX } from '../../';
@@ -17,7 +17,7 @@ describe('DataTableXComponent', () => {
       TestBed.overrideComponent(DataTableXComponent, {
           set: {
               providers: [
-                  {provide: Http, useValue: {}}
+                  {provide: HttpClient, useValue: {}}
               ]
           }
       });

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ViewEncapsulation, ContentChild, TemplateRef, Inject } from '@angular/core';
-import { URLSearchParams, Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Rx';
 
@@ -19,7 +19,7 @@ export class DataTableXComponent implements OnInit {
     @ContentChild('selectedBtnsGroups') public selectedBtnsGroups: TemplateRef<any>;
     @ContentChild('btnGroups') public btnGroups: TemplateRef<any>;
     public watchSuccess: Subject<any> = new Subject();
-    public params: URLSearchParams = new URLSearchParams();
+    public params: any = {};
     public rowsIndex: number = 0;
     public rows: any = [];
     public count = 0;
@@ -36,12 +36,12 @@ export class DataTableXComponent implements OnInit {
     public enableSearch = false;
     public searchValue = '';
     public totalRecords: any;
-    private http: Http;
-    constructor(@Inject(Http) http: Http) {
-       this.http = http;
+    private http: HttpClient;
+    constructor( @Inject(HttpClient) http: HttpClient) {
+        this.http = http;
     }
     public ngOnInit() {
-        this.initDataTable();
+        // this.initDataTable();
     }
     public initDataTable() {
         this.route = this.config.route;
@@ -69,8 +69,8 @@ export class DataTableXComponent implements OnInit {
         } else {
             this.rowsIndex = (this.limit * (this.page - 1));
         }
-        this.params.set('page', this.page);
-        this.params.set('limit', this.limit);
+        this.params.page = this.page;
+        this.params.limit = this.limit;
         this.get().subscribe((data) => {
             this.dataLoaded = true;
             if (data && data.pagination) {
@@ -89,10 +89,10 @@ export class DataTableXComponent implements OnInit {
     }
     public get() {
         return this.http.get(this.route, {
-            search: this.params,
-            headers: this.config.httpHeaders
+            headers: this.config.httpHeaders,
+            params: this.params,
         }).timeout(30000)
-            .map((res: any) => res.json())
+            .map((res: any) => res)
             .do((res: any) => {
                 return this.handleSuccess(res);
             })
@@ -113,19 +113,15 @@ export class DataTableXComponent implements OnInit {
         this.pagination();
     }
     public onSearch($event: any) {
-        for (const item of this.searchItems) {
-            this.params.delete('filter[' + item.searchKey + ']');
-        }
-        this.params.set('filter[' + this.searchBy + ']', $event.target.value);
+        delete this.params.filter;
+        this.params.filter[this.searchBy] = $event.target.value;
         this.page = 1;
         this.pagination();
     }
     public clearSearch() {
         this.enableSearch = !this.enableSearch;
         this.searchValue = '';
-        for (const item of this.searchItems) {
-            this.params.delete('filter[' + item.searchKey + ']');
-        }
+        delete this.params.filter;
         this.page = 1;
         this.pagination();
     }
@@ -150,7 +146,7 @@ export class DataTableXComponent implements OnInit {
             if (!sort.ascending) {
                 columnName = '-' + columnName;
             }
-            this.params.set('sort_by', columnName);
+            this.params.sort_by = columnName;
             this.page = 1;
             this.pagination();
         }
@@ -159,13 +155,13 @@ export class DataTableXComponent implements OnInit {
         if (sortable && columnName) {
             this.sorting.ascending = true;
             this.sorting.column = columnName;
-            this.params.set('sort_by', columnName);
+            this.params.sort_by = columnName;
             this.sortClass(columnName);
         }
     }
     public showPerPage(val: any) {
         this.searchValue = '';
-        this.params.set('search', '');
+        this.params.search = '';
         this.limit = val;
         this.page = 1;
         this.pagination();
@@ -197,12 +193,15 @@ export class DataTableXComponent implements OnInit {
     }
     public refresh() {
         this.onSelectAll(false);
+        if (this.enableSearch) {
+            this.clearSearch();
+        }
         const index = this.config.defaultSortColumnIndex;
         if (index != null && index >= 0) {
             this.setDefaultSorting(this.columns[index].searchKey, this.columns[index].sortable);
         } else {
             this.sorting.column = '';
-            this.params.delete('sort_by');
+            delete this.params.sort_by;
         }
         this.pagination();
     }
