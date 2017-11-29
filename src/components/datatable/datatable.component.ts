@@ -71,7 +71,6 @@ export class DataTableXComponent implements OnInit {
         }
         this.params.page = this.page;
         this.params.limit = this.limit;
-        console.log(this.params);
         this.get().subscribe((data) => {
             this.dataLoaded = true;
             if (data && data.pagination) {
