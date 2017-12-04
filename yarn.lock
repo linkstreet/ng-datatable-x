@@ -6,86 +6,72 @@
   version "0.3.8"
   resolved "https://registry.yarnpkg.com/8fold-marked/-/8fold-marked-0.3.8.tgz#c529a89bb90d3559fcab3ba4f7d4fa31c80fbb13"
 
-"@angular/animations@^5.0.2":
-  version "5.0.3"
-  resolved "https://registry.yarnpkg.com/@angular/animations/-/animations-5.0.3.tgz#f08b07007b149fa12679c346fa55820f544b19e0"
+"@angular/animations@^5.0.5":
+  version "5.0.5"
+  resolved "https://registry.yarnpkg.com/@angular/animations/-/animations-5.0.5.tgz#8a008900a79cd9ecb0ee741534ec435cce9539a5"
   dependencies:
     tslib "^1.7.1"
 
-"@angular/cdk@^5.0.0-rc.1":
-  version "5.0.0-rc.1"
-  resolved "https://registry.yarnpkg.com/@angular/cdk/-/cdk-5.0.0-rc.1.tgz#7d6d937fea50074962db8ce02664b164401d197d"
+"@angular/cdk@^5.0.0-rc.2":
+  version "5.0.0-rc.2"
+  resolved "https://registry.yarnpkg.com/@angular/cdk/-/cdk-5.0.0-rc.2.tgz#65a76381a0481e92990af4a105cd3bcbc53ee2af"
   dependencies:
     tslib "^1.7.1"
 
-"@angular/common@^5.0.2":
-  version "5.0.3"
-  resolved "https://registry.yarnpkg.com/@angular/common/-/common-5.0.3.tgz#9b0b874e0c8cb088d7c7de2af72c2c3f3ebd00bb"
+"@angular/common@^5.0.5":
+  version "5.0.5"
+  resolved "https://registry.yarnpkg.com/@angular/common/-/common-5.0.5.tgz#a0530320beefa7b3446c7b5c6b10d7eda42b5998"
   dependencies:
     tslib "^1.7.1"
 
-"@angular/compiler-cli@^5.0.2":
-  version "5.0.3"
-  resolved "https://registry.yarnpkg.com/@angular/compiler-cli/-/compiler-cli-5.0.3.tgz#820fe95f5653c1418ad9ac9ca9e819a879cce4ae"
+"@angular/compiler-cli@^5.0.5":
+  version "5.0.5"
+  resolved "https://registry.yarnpkg.com/@angular/compiler-cli/-/compiler-cli-5.0.5.tgz#4c25ce6f0a04eac9e56007be3639f86172a9c7ea"
   dependencies:
     chokidar "^1.4.2"
     minimist "^1.2.0"
     reflect-metadata "^0.1.2"
     tsickle "^0.24.0"
 
-"@angular/compiler@^5.0.2":
-  version "5.0.3"
-  resolved "https://registry.yarnpkg.com/@angular/compiler/-/compiler-5.0.3.tgz#45817c9a32b1b103c0307b0f55660f530f4a06aa"
+"@angular/compiler@^5.0.5":
+  version "5.0.5"
+  resolved "https://registry.yarnpkg.com/@angular/compiler/-/compiler-5.0.5.tgz#128329bd3a296116001480c56ecb95f0203aab07"
   dependencies:
     tslib "^1.7.1"
 
-"@angular/core@^5.0.2":
-  version "5.0.3"
-  resolved "https://registry.yarnpkg.com/@angular/core/-/core-5.0.3.tgz#2566400f6713bf1c39f7e00bc03a63280a87e66b"
+"@angular/core@^5.0.5":
+  version "5.0.5"
+  resolved "https://registry.yarnpkg.com/@angular/core/-/core-5.0.5.tgz#9f032aff4cfacce0e33629338466f93bba4cbec4"
   dependencies:
     tslib "^1.7.1"
 
-"@angular/forms@^5.0.2":
-  version "5.0.3"
-  resolved "https://registry.yarnpkg.com/@angular/forms/-/forms-5.0.3.tgz#207f92c2bd89660dda5858ef58d1eac1f2caf1a7"
+"@angular/forms@^5.0.5":
+  version "5.0.5"
+  resolved "https://registry.yarnpkg.com/@angular/forms/-/forms-5.0.5.tgz#3e910bfe34618c482bf21a8659fa9a1b2dbc1f3a"
   dependencies:
     tslib "^1.7.1"
 
-"@angular/http@^5.0.2":
-  version "5.0.3"
-  resolved "https://registry.yarnpkg.com/@angular/http/-/http-5.0.3.tgz#a3b9a4247c4b77456e49549655d4c1d1859e075d"
+"@angular/http@^5.0.5":
+  version "5.0.5"
+  resolved "https://registry.yarnpkg.com/@angular/http/-/http-5.0.5.tgz#701cf7a8d917ed602747bb02c5fef3529b48f2a9"
   dependencies:
     tslib "^1.7.1"
 
-"@angular/material@^5.0.0-rc.1":
-  version "5.0.0-rc.1"
-  resolved "https://registry.yarnpkg.com/@angular/material/-/material-5.0.0-rc.1.tgz#63456b7568c102b6bb7983a2837cc317350fe270"
+"@angular/material@^5.0.0-rc.2":
+  version "5.0.0-rc.2"
+  resolved "https://registry.yarnpkg.com/@angular/material/-/material-5.0.0-rc.2.tgz#c96bb3295787aa84aa3788d776e15611f77a70ed"
   dependencies:
     tslib "^1.7.1"
 
-"@angular/platform-browser-dynamic@^5.0.2":
-  version "5.0.3"
-  resolved "https://registry.yarnpkg.com/@angular/platform-browser-dynamic/-/platform-browser-dynamic-5.0.3.tgz#be6dcf03a04fa51c6a0484b40e5f1a7d7e54cc87"
+"@angular/platform-browser-dynamic@^5.0.5":
+  version "5.0.5"
+  resolved "https://registry.yarnpkg.com/@angular/platform-browser-dynamic/-/platform-browser-dynamic-5.0.5.tgz#d7ac74c5ffd4c9a133ba90af160402266e92351d"
   dependencies:
     tslib "^1.7.1"
 
-"@angular/platform-browser@^5.0.2":
-  version "5.0.3"
-  resolved "https://registry.yarnpkg.com/@angular/platform-browser/-/platform-browser-5.0.3.tgz#4ac872404a2a8162dd28a5b164238b76bf5e1261"
-  dependencies:
-    tslib "^1.7.1"
-
-"@angular/platform-server@^5.0.2":
-  version "5.0.3"
-  resolved "https://registry.yarnpkg.com/@angular/platform-server/-/platform-server-5.0.3.tgz#5f3175e5a59caff728597a071d4c5e163c13f29e"
-  dependencies:
-    domino "^1.0.29"
-    tslib "^1.7.1"
-    xhr2 "^0.1.4"
-
-"@angular/router@^5.0.2":
-  version "5.0.3"
-  resolved "https://registry.yarnpkg.com/@angular/router/-/router-5.0.3.tgz#616cc6a7ae33575b54e613b70af5c7f291c8cd1e"
+"@angular/platform-browser@^5.0.5":
+  version "5.0.5"
+  resolved "https://registry.yarnpkg.com/@angular/platform-browser/-/platform-browser-5.0.5.tgz#71039c85b2bc5e3f4405151ffd1e2096c4f373a1"
   dependencies:
     tslib "^1.7.1"
 
@@ -131,9 +117,9 @@
     fs-extra "^4.0.1"
     viz.js "^1.8.0"
 
-"@ng-bootstrap/ng-bootstrap@^1.0.0-beta.5":
-  version "1.0.0-beta.5"
-  resolved "https://registry.yarnpkg.com/@ng-bootstrap/ng-bootstrap/-/ng-bootstrap-1.0.0-beta.5.tgz#da2b9066b3701a284cac5a16168a77def947b4ab"
+"@ng-bootstrap/ng-bootstrap@^1.0.0-beta.6":
+  version "1.0.0-beta.6"
+  resolved "https://registry.yarnpkg.com/@ng-bootstrap/ng-bootstrap/-/ng-bootstrap-1.0.0-beta.6.tgz#676cb6c1c6334c3b34d0d549938386ba99796462"
 
 "@types/bluebird@*":
   version "3.5.18"
@@ -1568,10 +1554,6 @@ domhandler@^2.3.0:
   resolved "https://registry.yarnpkg.com/domhandler/-/domhandler-2.4.1.tgz#892e47000a99be55bbf3774ffea0561d8879c259"
   dependencies:
     domelementtype "1"
-
-domino@^1.0.29:
-  version "1.0.30"
-  resolved "https://registry.yarnpkg.com/domino/-/domino-1.0.30.tgz#54a4154ecae968616680f8feba3cedff355c71f4"
 
 domutils@1.5.1:
   version "1.5.1"
@@ -6026,10 +6008,6 @@ ws@1.1.2:
 wtf-8@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/wtf-8/-/wtf-8-1.0.0.tgz#392d8ba2d0f1c34d1ee2d630f15d0efb68e1048a"
-
-xhr2@^0.1.4:
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/xhr2/-/xhr2-0.1.4.tgz#7f87658847716db5026323812f818cadab387a5f"
 
 xmlhttprequest-ssl@1.5.3:
   version "1.5.3"
