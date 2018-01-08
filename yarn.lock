@@ -57,7 +57,7 @@
   dependencies:
     tslib "^1.7.1"
 
-"@angular/material@^5.0.0-rc.2":
+"@angular/material@^5.0.0-rc.1":
   version "5.0.0-rc.2"
   resolved "https://registry.yarnpkg.com/@angular/material/-/material-5.0.0-rc.2.tgz#c96bb3295787aa84aa3788d776e15611f77a70ed"
   dependencies:

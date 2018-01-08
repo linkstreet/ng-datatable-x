@@ -1,6 +1,6 @@
 {
   "name": "@linkstreet/ng-datatable-x",
-  "version": "1.0.1",
+  "version": "1.0.5",
   "description": "Angular 5 Datatable",
   "main": "./dist/index.umd.js",
   "module": "./dist/index.js",
@@ -71,7 +71,7 @@
     "@angular/core": "^5.0.5",
     "@angular/forms": "^5.0.5",
     "@angular/http": "^5.0.5",
-    "@angular/material": "^5.0.0-rc.2",
+    "@angular/material": "^5.0.0-rc.1",
     "@angular/platform-browser": "^5.0.5",
     "@angular/platform-browser-dynamic": "^5.0.5",
     "@compodoc/compodoc": "^1.0.0-beta.9",
