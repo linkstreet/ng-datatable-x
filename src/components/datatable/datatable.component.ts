@@ -157,9 +157,15 @@ export class DataTableXComponent implements OnInit {
     }
     public setDefaultSorting(columnName: any, sortable: any) {
         if (sortable && columnName) {
-            this.sorting.ascending = true;
+            if (!this.config.defaultSortOrderDesc) {
+                this.sorting.ascending = true;
+                this.params.sort_by = columnName;
+            } else {
+                this.sorting.ascending = false;
+                this.params.sort_by = '-' + columnName;
+            }
+            console.log(' this.sorting.ascending',  this.sorting.ascending);
             this.sorting.column = columnName;
-            this.params.sort_by = columnName;
             this.sortClass(columnName);
         }
     }
