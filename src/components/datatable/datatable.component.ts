@@ -164,7 +164,6 @@ export class DataTableXComponent implements OnInit {
                 this.sorting.ascending = false;
                 this.params.sort_by = '-' + columnName;
             }
-            console.log(' this.sorting.ascending',  this.sorting.ascending);
             this.sorting.column = columnName;
             this.sortClass(columnName);
         }
