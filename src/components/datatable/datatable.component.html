@@ -1,6 +1,6 @@
 <div *ngIf="route">
     <ng-template [ngIf]="config.navbarVisible">
-        <nav class="navbar navbar-table-top" *ngIf="selectedCount>0">
+        <nav class="navbar navbar-table-top navbar-selected" *ngIf="selectedCount>0">
             <div class="d-flex justify-content-between">
                 <span class="navbar-text">{{selectedCount}} Selected / {{count}} total</span>
                 <form class="form-inline">
@@ -10,44 +10,37 @@
                 </form>
             </div>
         </nav>
-        <nav class="navbar navbar-table-top" *ngIf="!selectedCount">
-            <div class="d-flex justify-content-between" *ngIf="!enableSearch">
-                <span class="navbar-text">{{config.title}}</span>
+        <nav class="navbar navbar-table-top navbar-header" *ngIf="!selectedCount">
+            <div class="d-flex justify-content-between">
+                <div class="navbar-text">{{config.title}}</div>
                 <form class="form-inline">
                     <div class="btn-group-1" role="group">
-                        <button *ngIf="config.search" type="button" class="btn btn-icon-only btn-icon-lg" placement="top" ngbTooltip="Search" container="body"
-                            (click)="enableSearch=!enableSearch;">
-                            <i class="mdi mdi-magnify"></i>
-                        </button>
                         <button type="button" class="btn btn-icon-only btn-icon-lg" placement="top" ngbTooltip="Refresh" container="body" (click)="refresh();">
                             <i class="mdi mdi-refresh"></i>
                         </button>
                         <ng-template [ngTemplateOutlet]="btnGroups"></ng-template>
-
                     </div>
                 </form>
             </div>
-            <div class="d-flex justify-content-between" *ngIf="enableSearch">
-                <div class="form-inline w-100">
-                    <div class="input-group w-100">
-                        <span class="input-group-addon">
-                            <i class="mdi mdi-magnify"></i>
-                        </span>
-                        <div class="input-group-btn" *ngIf="searchBy">
-                            <mat-form-field>
-                                <mat-select placeholder="Filter By" floatPlaceholder="never" [(ngModel)]="searchBy">
-                                    <mat-option *ngFor="let item of searchItems" [value]="item.searchKey">
-                                        {{ item.name }}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                        <input type="text" class="form-control" placeholder="Search" autofocus [(ngModel)]="searchValue" (keyup)='onSearch($event)'>
-                        <span (click)="clearSearch();" class="input-group-addon cursor-pointer">
-                            <i class="mdi mdi-close"></i>
-                        </span>
-                    </div>
+        </nav>
+        <nav class="navbar navbar-search" *ngIf="config.search">
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <i class="mdi mdi-magnify"></i>
+                </span>
+                <div class="input-group-btn" *ngIf="searchBy">
+                    <mat-form-field>
+                        <mat-select placeholder="Filter By" floatPlaceholder="never" [(ngModel)]="searchBy">
+                            <mat-option *ngFor="let item of searchItems" [value]="item.searchKey">
+                                {{ item.name }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
+                <input type="text" class="form-control" placeholder="Search" autofocus [(ngModel)]="searchValue" (keyup)='onSearch($event)'>
+                <span *ngIf="searchValue" (click)="clearSearch();" class="input-group-addon cursor-pointer">
+                    <i class="mdi mdi-close"></i>
+                </span>
             </div>
         </nav>
     </ng-template>
