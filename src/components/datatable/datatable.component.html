@@ -25,12 +25,12 @@
         </nav>
         <nav class="navbar navbar-search" *ngIf="config.search">
             <div class="input-group">
-                <span class="input-group-addon">
-                    <i class="mdi mdi-magnify"></i>
-                </span>
+                <div class="input-group-prepend mr-0">
+                    <span class="input-group-text"><i class="mdi mdi-magnify"></i></span>
+                </div>
                 <div class="input-group-btn" *ngIf="searchBy">
                     <mat-form-field>
-                        <mat-select placeholder="Filter By" floatPlaceholder="never" [(ngModel)]="searchBy">
+                        <mat-select placeholder="Filter By" floatPlaceholder="never" [(ngModel)]="searchBy" (change)="onSearchDropdown();">
                             <mat-option *ngFor="let item of searchItems" [value]="item.searchKey">
                                 {{ item.name }}
                             </mat-option>
@@ -38,9 +38,9 @@
                     </mat-form-field>
                 </div>
                 <input type="text" class="form-control" placeholder="Search" autofocus [(ngModel)]="searchValue" (keyup)='onSearch($event)'>
-                <span *ngIf="searchValue" (click)="clearSearch();" class="input-group-addon cursor-pointer">
-                    <i class="mdi mdi-close"></i>
-                </span>
+                <div *ngIf="searchValue" (click)="clearSearch();" class="input-group-append cursor-pointer">
+                    <span class="input-group-text"><i class="mdi mdi-close"></i></span>
+                </div>
             </div>
         </nav>
     </ng-template>
@@ -50,10 +50,10 @@
                 <thead *ngIf="config.headerVisible">
                     <tr>
                         <th class="w50" nowrap="nowrap" *ngIf="config.selectable">
-                            <label class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" [checked]="selectAll" (change)="onSelectAll(selectAll)" [(ngModel)]="selectAll">
-                                <span class="custom-control-indicator"></span>
-                            </label>
+                            <div class="custom-control custom-checkbox table-custom-checkbox">
+                                <input type="checkbox" id="tableHeaderCheckbox" class="custom-control-input" [checked]="selectAll" (change)="onSelectAll(selectAll)" [(ngModel)]="selectAll">
+                                <label class="custom-control-label custom-control-indicator" for="tableHeaderCheckbox"></label>
+                            </div>
                         </th>
                         <th class="w50" nowrap="nowrap" *ngIf="config.expandable">
                             <button type="button" class="btn btn-icon-only expand-row-icon" title="Expand/Collapse All" (click)="toggleExpandAll()">
@@ -72,7 +72,6 @@
                                 <span *ngIf="column.sortable && sortClass(column.searchKey)">
                                     <i [class]="sortClass(column.searchKey)"></i>
                                 </span>
-
                             </th>
                         </ng-template>
                     </tr>
@@ -81,10 +80,10 @@
                     <ng-template ngFor let-n="index" let-row [ngForOf]="rows">
                         <tr>
                             <td class="w50" *ngIf="config.selectable">
-                                <label class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" [checked]="row.selected" (change)="onCheckboxChange(row)">
-                                    <span class="custom-control-indicator"></span>
-                                </label>
+                                <div class="custom-control custom-checkbox table-custom-checkbox">
+                                    <input type="checkbox" id="tableRowCheckbox{{n}}" class="custom-control-input" [checked]="row.selected" (change)="onCheckboxChange(row)">
+                                    <label class="custom-control-label custom-control-indicator" for="tableRowCheckbox{{n}}"></label>
+                                </div>
                             </td>
                             <td class="w50" *ngIf="config.expandable">
                                 <button type="button" class="btn btn-icon-only expand-row-icon" title="Expand/Collapse Row" (click)="row.expanded = !row.expanded">
