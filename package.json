@@ -1,6 +1,6 @@
 {
   "name": "@linkstreet/ng-datatable-x",
-  "version": "1.0.9",
+  "version": "2.0.0",
   "description": "Angular 5 Datatable",
   "main": "./dist/index.umd.js",
   "module": "./dist/index.js",
