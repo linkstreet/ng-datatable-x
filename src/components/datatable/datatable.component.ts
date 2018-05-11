@@ -214,4 +214,9 @@ export class DataTableXComponent implements OnInit {
         }
         this.pagination();
     }
+    public onSearchDropdown() {
+        if (this.searchValue) {
+            this.clearSearch();
+        }
+    }
 }
