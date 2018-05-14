@@ -36,6 +36,7 @@ export class DataTableXComponent implements OnInit {
     public enableSearch = false;
     public searchValue = '';
     public totalRecords: any;
+    public checkBoxPrefix = Math.random().toString(36).slice(2);
     private http: HttpClient;
     constructor( @Inject(HttpClient) http: HttpClient) {
         this.http = http;

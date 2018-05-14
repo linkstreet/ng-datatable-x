@@ -51,8 +51,8 @@
                     <tr>
                         <th class="w50" nowrap="nowrap" *ngIf="config.selectable">
                             <div class="custom-control custom-checkbox table-custom-checkbox">
-                                <input type="checkbox" id="tableHeaderCheckbox" class="custom-control-input" [checked]="selectAll" (change)="onSelectAll(selectAll)" [(ngModel)]="selectAll">
-                                <label class="custom-control-label custom-control-indicator" for="tableHeaderCheckbox"></label>
+                                <input type="checkbox" id="Header{{checkBoxPrefix}}" class="custom-control-input" [checked]="selectAll" (change)="onSelectAll(selectAll)" [(ngModel)]="selectAll">
+                                <label class="custom-control-label custom-control-indicator" for="Header{{checkBoxPrefix}}"></label>
                             </div>
                         </th>
                         <th class="w50" nowrap="nowrap" *ngIf="config.expandable">
@@ -81,8 +81,8 @@
                         <tr>
                             <td class="w50" *ngIf="config.selectable">
                                 <div class="custom-control custom-checkbox table-custom-checkbox">
-                                    <input type="checkbox" id="tableRowCheckbox{{n}}" class="custom-control-input" [checked]="row.selected" (change)="onCheckboxChange(row)">
-                                    <label class="custom-control-label custom-control-indicator" for="tableRowCheckbox{{n}}"></label>
+                                    <input type="checkbox" id="Row{{checkBoxPrefix}}{{n}}" class="custom-control-input" [checked]="row.selected" (change)="onCheckboxChange(row)">
+                                    <label class="custom-control-label custom-control-indicator" for="Row{{checkBoxPrefix}}{{n}}"></label>
                                 </div>
                             </td>
                             <td class="w50" *ngIf="config.expandable">
