@@ -114,6 +114,8 @@ export class DataTableXComponent implements OnInit {
         this.pagination();
     }
     public onSearch($event: any) {
+        this.selectedCount = 0;
+        this.selectAll = false;
         for (const item of this.searchItems) {
             delete this.params['filter[' + item.searchKey + ']'];
         }
@@ -122,6 +124,8 @@ export class DataTableXComponent implements OnInit {
         this.pagination();
     }
     public clearSearch() {
+        this.selectedCount = 0;
+        this.selectAll = false;
         this.enableSearch = !this.enableSearch;
         this.searchValue = '';
         for (const item of this.searchItems) {
@@ -141,6 +145,8 @@ export class DataTableXComponent implements OnInit {
     }
     public changeSorting(columnName: any, sortable: any): void {
         if (sortable && columnName) {
+            this.selectedCount = 0;
+            this.selectAll = false;
             const sort = this.sorting;
             if (sort.column === columnName) {
                 sort.ascending = !sort.ascending;
