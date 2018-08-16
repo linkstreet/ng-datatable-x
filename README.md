@@ -1,4 +1,4 @@
-﻿# ng-datatable-x
+# ng-datatable-x
 
 `ng-datatable-x` is an Angular component for presenting Datatable.
 It was built for modern browsers using _TypeScript, CSS3 and HTML5_ and Angular `>=4.0.0`.
