@@ -1,5 +1,5 @@
 {
-  "name": "ng-datatable-x",
+  "name": "@linkstreet/ng-datatable-x",
   "version": "3.0.1-beta-2",
   "license": "MIT",
   "scripts": {
