@@ -1,5 +1,5 @@
 {
-  "name": "ng-datatable-x",
+  "name": "@linkstreet/ng-datatable-x",
   "version": "3.0.0",
   "license": "MIT",
   "scripts": {
@@ -10,6 +10,18 @@
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
+  "author": {
+    "name": "Akhilesh Bamhore",
+    "url": "https://in.linkedin.com/in/akhileshbamhore"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/linkstreet/ng-datatable-x"
+  },
+  "bugs": {
+    "url": "https://github.com/linkstreet/ng-datatable-x/issues"
+  },
+  "homepage": "https://github.com/linkstreet/ng-datatable-x#readme",
   "dependencies": {
     "@angular/animations": "^6.1.3",
     "@angular/cdk": "^6.4.5",
