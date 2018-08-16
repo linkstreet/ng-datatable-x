@@ -157,38 +157,38 @@
         }
       }
     },
-    "ng-datatable-x": {
-      "root": "projects/ng-datatable-x",
-      "sourceRoot": "projects/ng-datatable-x/src",
+    "ngDatatableX": {
+      "root": "projects/ngDatatableX",
+      "sourceRoot": "projects/ngDatatableX/src",
       "projectType": "library",
       "prefix": "lib",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",
           "options": {
-            "tsConfig": "projects/ng-datatable-x/tsconfig.lib.json",
-            "project": "projects/ng-datatable-x/ng-package.json"
+            "tsConfig": "projects/nngDatatableX/tsconfig.lib.json",
+            "project": "projects/ngDatatableX/ng-package.json"
           },
           "configurations": {
             "production": {
-              "project": "projects/ng-datatable-x/ng-package.prod.json"
+              "project": "projects/ngDatatableX/ng-package.prod.json"
             }
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/ng-datatable-x/src/test.ts",
-            "tsConfig": "projects/ng-datatable-x/tsconfig.spec.json",
-            "karmaConfig": "projects/ng-datatable-x/karma.conf.js"
+            "main": "projects/ngDatatableX/src/test.ts",
+            "tsConfig": "projects/ngDatatableX/tsconfig.spec.json",
+            "karmaConfig": "projects/ngDatatableX/karma.conf.js"
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "projects/ng-datatable-x/tsconfig.lib.json",
-              "projects/ng-datatable-x/tsconfig.spec.json"
+              "projects/ngDatatableX/tsconfig.lib.json",
+              "projects/ngDatatableX/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"

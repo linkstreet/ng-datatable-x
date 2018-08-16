@@ -100,11 +100,17 @@
     "@angular-devkit/core" "0.6.8"
     rxjs "^6.0.0"
 
-"@angular/animations@^6.0.0":
+"@angular/animations@^6.1.3":
   version "6.1.3"
   resolved "https://registry.yarnpkg.com/@angular/animations/-/animations-6.1.3.tgz#c7b1cf407e5087a499532999cb412a546f9ba855"
   dependencies:
     tslib "^1.9.0"
+
+"@angular/cdk@^6.4.5":
+  version "6.4.5"
+  resolved "https://registry.yarnpkg.com/@angular/cdk/-/cdk-6.4.5.tgz#c0c62d90ca0a8561dee7ee8347d598dd46bfc03f"
+  dependencies:
+    tslib "^1.7.1"
 
 "@angular/cli@~6.0.0":
   version "6.0.8"
@@ -166,7 +172,7 @@
   version "6.1.3"
   resolved "https://registry.yarnpkg.com/@angular/language-service/-/language-service-6.1.3.tgz#d8ddf7eabfe39b2f5922893a4ae71c3b9c93b4f1"
 
-"@angular/material@^6.4.3":
+"@angular/material@^6.4.5":
   version "6.4.5"
   resolved "https://registry.yarnpkg.com/@angular/material/-/material-6.4.5.tgz#284132505841e9ae7895239647ada65ede594350"
   dependencies:
