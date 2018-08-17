@@ -1,0 +1,148 @@
+<div *ngIf="route">
+    <ng-template [ngIf]="config.navbarVisible">
+        <nav class="navbar navbar-table-top navbar-selected" *ngIf="selectedCount>0">
+            <div class="d-flex justify-content-between">
+                <span class="navbar-text">{{selectedCount}} Selected / {{count}} total</span>
+                <form class="form-inline">
+                    <div class="btn-group" role="group">
+                        <ng-template [ngTemplateOutlet]="selectedBtnsGroups"></ng-template>
+                    </div>
+                </form>
+            </div>
+        </nav>
+        <nav class="navbar navbar-table-top navbar-header" *ngIf="!selectedCount">
+            <div class="d-flex justify-content-between">
+                <div class="navbar-text" [innerHTML]="config.title"></div>
+                <form class="form-inline">
+                    <div class="btn-group-1" role="group">
+                        <button type="button" class="btn btn-icon-only btn-icon-lg" placement="top" ngbTooltip="Refresh" container="body" (click)="refresh();">
+                            <i class="mdi mdi-refresh"></i>
+                        </button>
+                        <ng-template [ngTemplateOutlet]="btnGroups"></ng-template>
+                    </div>
+                </form>
+            </div>
+        </nav>
+        <nav class="navbar navbar-search" *ngIf="config.search">
+            <div class="input-group">
+                <div class="input-group-prepend mr-0">
+                    <span class="input-group-text">
+                        <i class="mdi mdi-magnify"></i>
+                    </span>
+                </div>
+                <div class="input-group-btn" *ngIf="searchBy">
+                    <mat-form-field>
+                        <mat-select [(ngModel)]="searchBy" (change)="onSearchDropdown();" name="filterby">
+                            <mat-option *ngFor="let item of searchItems" [value]="item.searchKey">
+                                {{ item.name }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <input type="text" class="form-control" placeholder="Search" autofocus [(ngModel)]="searchValue" (keyup)='onSearch($event)'>
+                <div *ngIf="searchValue" (click)="clearSearch();" class="input-group-append cursor-pointer">
+                    <span class="input-group-text">
+                        <i class="mdi mdi-close"></i>
+                    </span>
+                </div>
+            </div>
+        </nav>
+    </ng-template>
+    <div class='tab-content-dt' [ngClass]="{'loading-dt':!dataLoaded}">
+        <div class="datatable table-responsive">
+            <table class="table">
+                <thead *ngIf="config.headerVisible">
+                    <tr>
+                        <th class="w50" nowrap="nowrap" *ngIf="config.selectable">
+                            <div class="custom-control custom-checkbox table-custom-checkbox">
+                                <input type="checkbox" id="Header{{checkBoxPrefix}}" class="custom-control-input" [checked]="selectAll" (change)="onSelectAll(selectAll)"
+                                    [(ngModel)]="selectAll">
+                                <label class="custom-control-label custom-control-indicator" for="Header{{checkBoxPrefix}}"></label>
+                            </div>
+                        </th>
+                        <th class="w50" nowrap="nowrap" *ngIf="config.expandable">
+                            <button type="button" class="btn btn-icon-only expand-row-icon" title="Expand/Collapse All" (click)="toggleExpandAll()">
+                                <i class="mdi" [ngClass]='{"mdi-arrow-expand-all":!expandAll, "mdi-arrow-collapse-all":expandAll}'></i>
+                            </button>
+                        </th>
+                        <th [attr.class]="config.serialNumber" nowrap="nowrap">
+                            Sn
+                        </th>
+                        <ng-template ngFor let-column [ngForOf]="columns">
+                            <th class="{{column.class}}" [ngClass]="{'cursor-pointer':column.sortable}" (click)="changeSorting(column.searchKey,column.sortable)"
+                                nowrap="nowrap">
+                                <ng-template [ngIf]="column.name">
+                                    <span class="col-title" [innerHtml]="column.name"></span>
+                                </ng-template>
+                                <span *ngIf="column.sortable && sortClass(column.searchKey)">
+                                    <i [class]="sortClass(column.searchKey)"></i>
+                                </span>
+                            </th>
+                        </ng-template>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-template ngFor let-n="index" let-row [ngForOf]="rows">
+                        <tr>
+                            <td class="w50" *ngIf="config.selectable">
+                                <div class="custom-control custom-checkbox table-custom-checkbox">
+                                    <input type="checkbox" id="Row{{checkBoxPrefix}}{{n}}" class="custom-control-input" [checked]="row.selected" (change)="onCheckboxChange(row)">
+                                    <label class="custom-control-label custom-control-indicator" for="Row{{checkBoxPrefix}}{{n}}"></label>
+                                </div>
+                            </td>
+                            <td class="w50" *ngIf="config.expandable">
+                                <button type="button" class="btn btn-icon-only expand-row-icon" title="Expand/Collapse Row" (click)="row.expanded = !row.expanded">
+                                    <i class="mdi" [ngClass]='{"mdi-chevron-right":!row.expanded, "mdi-chevron-down":row.expanded}'></i>
+                                </button>
+                            </td>
+                            <td [attr.class]="config.serialNumber">
+                                {{(n +1) + rowsIndex}}
+                            </td>
+                            <ng-template [ngTemplateOutlet]="rowGroups" [ngTemplateOutletContext]="{ $implicit: row }"></ng-template>
+                        </tr>
+                        <tr class="expand-row" *ngIf="row.expanded">
+                            <td [attr.colspan]="columns.length + 3">
+                                <div class="card-block bg-faded">
+                                    <div class='details'>
+                                        <ng-template [ngTemplateOutlet]="rowDetails" [ngTemplateOutletContext]="{ $implicit: row }"></ng-template>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </ng-template>
+                    <tr class="no-reults-found text-center" *ngIf="rows.length === 0 && dataLoaded">
+                        <td *ngIf="!searchValue" [attr.colspan]="columns.length + 3" [innerHtml]="config.emptyMessage"></td>
+                        <td *ngIf="searchValue" [attr.colspan]="columns.length + 3">No search results found.</td>
+                    </tr>
+                </tbody>
+                <tfoot *ngIf="count">
+                    <tr>
+                        <td [attr.colspan]="columns.length + 3">
+                            <div class="dt-footer">
+                                <div class="d-flex justify-content-between">
+                                    <div class="text-left">
+                                        <div class="show_per_page">
+                                            Show
+                                            <mat-form-field>
+                                                <mat-select floatPlaceholder="never" (change)="showPerPage(limit)" [(ngModel)]="limit">
+                                                    <mat-option [value]="15">15</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="show_total_count">
+                                            {{ totalRecords }}
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <ngb-pagination *ngIf="count > limit" [collectionSize]="count" [(page)]="page" size="sm" [pageSize]="limit" [maxSize]="5"
+                                            [rotate]="true" [ellipses]="false" [boundaryLinks]="true" (pageChange)="onPage($event)"></ngb-pagination>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
