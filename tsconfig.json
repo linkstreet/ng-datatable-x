@@ -5,6 +5,7 @@
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
+    "module": "es2015",
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
@@ -17,17 +18,11 @@
       "dom"
     ],
     "paths": {
-      "my-lib": [
-        "dist/my-lib"
+      "datatable": [
+        "dist/linkstreet/ng-datatable-x"
       ],
-      "my-lib/*": [
-        "dist/my-lib/*"
-      ],
-      "ng-datatable-x": [
-        "dist/ng-datatable-x"
-      ],
-      "ng-datatable-x/*": [
-        "dist/ng-datatable-x/*"
+      "datatable/*": [
+        "dist/linkstreet/ng-datatable-x/*"
       ]
     }
   }
