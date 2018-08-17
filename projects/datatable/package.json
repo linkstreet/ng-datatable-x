@@ -1,6 +1,17 @@
 {
   "name": "@linkstreet/ng-datatable-x",
   "version": "3.0.2",
+  "author": {
+    "name": "Linkstreet"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/linkstreet/ng-datatable-x"
+  },
+  "bugs": {
+    "url": "https://github.com/linkstreet/ng-datatable-x/issues"
+  },
+  "homepage": "https://github.com/linkstreet/ng-datatable-x#readme",
   "peerDependencies": {
     "@angular/common": "^6.0.0-rc.0 || ^6.0.0",
     "@angular/core": "^6.0.0-rc.0 || ^6.0.0"
