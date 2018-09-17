@@ -2,6 +2,8 @@ import { Component, OnInit, Input, ViewEncapsulation, ContentChild, TemplateRef,
 import { HttpClient } from '@angular/common/http';
 import { Subject, Observable } from 'rxjs';
 import {catchError, timeout, tap} from 'rxjs/operators';
+import {map, startWith, debounceTime, distinctUntilChanged, switchMap} from 'rxjs/operators';
+import { FormControl } from '@angular/forms';
 
 @Component({
     selector: 'ng-datatable-x',
@@ -38,8 +40,13 @@ export class DataTableXComponent implements OnInit {
     public totalRecords: any;
     public checkBoxPrefix = Math.random().toString(36).slice(2);
     private http: HttpClient;
+    public searchCtrl: FormControl;
     constructor( @Inject(HttpClient) http: HttpClient) {
         this.http = http;
+        this.searchCtrl = new FormControl();
+        this.searchCtrl.valueChanges.pipe(debounceTime(300)).subscribe(val => {
+            this.onSearch(val);
+        });
     }
     public ngOnInit() {
         this.initDataTable();
@@ -113,13 +120,13 @@ export class DataTableXComponent implements OnInit {
         this.page = event;
         this.pagination();
     }
-    public onSearch($event: any) {
+    public onSearch(value: any) {
         this.selectedCount = 0;
         this.selectAll = false;
         for (const item of this.searchItems) {
             delete this.params['filter[' + item.searchKey + ']'];
         }
-        this.params['filter[' + this.searchBy + ']'] = $event.target.value;
+        this.params['filter[' + this.searchBy + ']'] = value;
         this.page = 1;
         this.pagination();
     }

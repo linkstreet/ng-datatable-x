@@ -39,7 +39,7 @@
                         </mat-select>
                     </mat-form-field>
                 </div>
-                <input type="text" class="form-control" placeholder="Search" autofocus [(ngModel)]="searchValue" (keyup)='onSearch($event)'>
+                <input type="text" class="form-control" placeholder="Search" autofocus [(ngModel)]="searchValue" [formControl]="searchCtrl">
                 <div *ngIf="searchValue" (click)="clearSearch();" class="input-group-append cursor-pointer">
                     <span class="input-group-text">
                         <i class="mdi mdi-close"></i>
