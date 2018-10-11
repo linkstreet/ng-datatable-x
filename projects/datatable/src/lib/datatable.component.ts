@@ -15,6 +15,7 @@ export class DataTableXComponent implements OnInit {
     @Input() public config: any;
     public columns: any[];
     public route: any;
+    public colSpans: any[];
     @ContentChild('tablerow') public tablerow: TemplateRef<any>;
     @ContentChild('rowGroups') public rowGroups: TemplateRef<any>;
     @ContentChild('rowDetails') public rowDetails: TemplateRef<any>;
@@ -54,6 +55,7 @@ export class DataTableXComponent implements OnInit {
     public initDataTable() {
         this.route = this.config.route;
         this.columns = this.config.columns;
+        this.colSpans = this.config.colSpans;
         if (this.route) {
             const searchableCols = this.columns.filter((column: any) => (column.searchable === true));
             this.setFilterColumns(searchableCols);

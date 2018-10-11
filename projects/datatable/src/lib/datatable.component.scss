@@ -3,6 +3,9 @@
     width: 100%;
     .table {
         margin: 0;
+        .row-span{
+            border-bottom: 4px solid #f1f4f8;
+        }
         tr {
             th, td {
                 vertical-align: middle;
@@ -202,8 +205,14 @@
         .w200 {
             width: 200px;
         }
+        .w180 {
+            width: 180px;
+        }
         .w175 {
             width: 175px;
+        }
+        .w165 {
+            width: 165px;
         }
         .w150 {
             width: 150px;

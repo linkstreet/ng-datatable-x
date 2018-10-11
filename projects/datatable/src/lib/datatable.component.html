@@ -52,6 +52,15 @@
         <div class="datatable table-responsive">
             <table class="table">
                 <thead *ngIf="config.headerVisible">
+                    <tr class="row-span" *ngIf="config.colSpan">
+                        <ng-template ngFor let-col [ngForOf]="colSpans">
+                            <th class="{{col.class}}" nowrap="nowrap" [attr.colspan]="col.count">
+                                <ng-template [ngIf]="col.name">
+                                    <span class="col-title" [innerHtml]="col.name"></span>
+                                </ng-template>
+                            </th>
+                        </ng-template>
+                    </tr>
                     <tr>
                         <th class="w50" nowrap="nowrap" *ngIf="config.selectable">
                             <div class="custom-control custom-checkbox table-custom-checkbox">
