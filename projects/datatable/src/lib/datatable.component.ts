@@ -41,6 +41,7 @@ export class DataTableXComponent implements OnInit {
     public searchValue = '';
     public totalRecords: any;
     public checkBoxPrefix = Math.random().toString(36).slice(2);
+    public spinner = true;
     private http: HttpClient;
     public searchCtrl: FormControl;
     constructor( @Inject(HttpClient) http: HttpClient) {
@@ -48,6 +49,9 @@ export class DataTableXComponent implements OnInit {
         this.searchCtrl = new FormControl();
     }
     public ngOnInit() {
+    if (this.config.spinner != undefined) {
+        this.spinner = this.config.spinner;
+    }
     this.searchCtrl.valueChanges.pipe(debounceTime(300),
         distinctUntilChanged()).subscribe(val => {
             if (this.addSearch) {
@@ -107,6 +111,7 @@ export class DataTableXComponent implements OnInit {
             params: this.params
         }).pipe(timeout(30000),
             tap(res => {
+            this.spinner = false;
                 return this.handleSuccess(res);
             }),
             catchError((err) => {
@@ -149,6 +154,9 @@ export class DataTableXComponent implements OnInit {
         }
         this.page = 1;
         this.pagination();
+    }
+    public loadDatatable() {
+        this.clearSearch();
     }
     public sortClass(columnName: any): any {
         const iconClass = 'sort-icon mdi ';
@@ -224,6 +232,7 @@ export class DataTableXComponent implements OnInit {
         this.selectedCount = this.getSelected().length;
     }
     public refresh() {
+        this.spinner = true;
         this.onSelectAll(false);
         if (this.enableSearch) {
             this.clearSearch();

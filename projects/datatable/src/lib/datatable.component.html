@@ -48,7 +48,7 @@
             </div>
         </nav>
     </ng-template>
-    <div class='tab-content-dt' [ngClass]="{'loading-dt':!dataLoaded}">
+    <div class='tab-content-dt' [ngClass]="{'loading-dt': (!dataLoaded && spinner)}">
         <div class="datatable table-responsive">
             <table class="table">
                 <thead *ngIf="config.headerVisible">
