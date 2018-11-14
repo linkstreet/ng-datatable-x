@@ -32,6 +32,7 @@ export class DataTableXComponent implements OnInit {
     public expandAll = false;
     public selectAll = false;
     public selectedCount = 0;
+    public addSearch = false;
     public searchItems: any = [];
     public searchBy: any;
     public sort: any;
@@ -45,11 +46,14 @@ export class DataTableXComponent implements OnInit {
     constructor( @Inject(HttpClient) http: HttpClient) {
         this.http = http;
         this.searchCtrl = new FormControl();
-        this.searchCtrl.valueChanges.pipe(debounceTime(300)).subscribe(val => {
-            this.onSearch(val);
-        });
     }
     public ngOnInit() {
+    this.searchCtrl.valueChanges.pipe(debounceTime(300),
+        distinctUntilChanged()).subscribe(val => {
+            if (this.addSearch) {
+                this.onSearch(val);
+            }
+        });
         this.initDataTable();
     }
     public initDataTable() {
@@ -111,6 +115,9 @@ export class DataTableXComponent implements OnInit {
         );
     }
     public handleSuccess(data: any) {
+        setTimeout(() => {
+            this.addSearch = true;
+          }, 350);
         return data;
     }
     public handleError(error: any) {
