@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, ViewEncapsulation, ContentChild, TemplateRef, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Subject, Observable } from 'rxjs';
-import {catchError, timeout, tap} from 'rxjs/operators';
-import {map, startWith, debounceTime, distinctUntilChanged, switchMap} from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { catchError, timeout, tap } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
 
 @Component({
@@ -35,6 +35,7 @@ export class DataTableXComponent implements OnInit {
     public addSearch = false;
     public searchItems: any = [];
     public searchBy: any;
+    public searchName: any;
     public sort: any;
     public sorting: any = {};
     public enableSearch = false;
@@ -44,20 +45,20 @@ export class DataTableXComponent implements OnInit {
     public spinner = true;
     private http: HttpClient;
     public searchCtrl: FormControl;
-    constructor( @Inject(HttpClient) http: HttpClient) {
+    constructor(@Inject(HttpClient) http: HttpClient) {
         this.http = http;
         this.searchCtrl = new FormControl();
     }
     public ngOnInit() {
-    if (this.config.spinner != undefined) {
-        this.spinner = this.config.spinner;
-    }
-    this.searchCtrl.valueChanges.pipe(debounceTime(300),
-        distinctUntilChanged()).subscribe(val => {
-            if (this.addSearch) {
-                this.onSearch(val);
-            }
-        });
+        if (this.config.spinner != undefined) {
+            this.spinner = this.config.spinner;
+        }
+        this.searchCtrl.valueChanges.pipe(debounceTime(300),
+            distinctUntilChanged()).subscribe(val => {
+                if (this.addSearch) {
+                    this.onSearch(val);
+                }
+            });
         this.initDataTable();
     }
     public initDataTable() {
@@ -78,6 +79,7 @@ export class DataTableXComponent implements OnInit {
         this.searchItems = columns;
         if (columns && columns.length) {
             this.searchBy = columns[0].searchKey;
+            this.searchName = columns[0].name;
         }
     }
     public pagination() {
@@ -89,7 +91,7 @@ export class DataTableXComponent implements OnInit {
         }
         this.params.page = this.page;
         this.params.limit = this.limit;
-        this.get().subscribe((data:any) => {
+        this.get().subscribe((data: any) => {
             this.dataLoaded = true;
             if (data && data.pagination) {
                 this.count = data.pagination.total;
@@ -111,18 +113,18 @@ export class DataTableXComponent implements OnInit {
             params: this.params
         }).pipe(timeout(30000),
             tap(res => {
-            this.spinner = false;
+                this.spinner = false;
                 return this.handleSuccess(res);
             }),
             catchError((err) => {
                 return this.handleError(err);
-            }), 
+            }),
         );
     }
     public handleSuccess(data: any) {
         setTimeout(() => {
             this.addSearch = true;
-          }, 350);
+        }, 350);
         return data;
     }
     public handleError(error: any) {
@@ -140,7 +142,9 @@ export class DataTableXComponent implements OnInit {
         for (const item of this.searchItems) {
             delete this.params['filter[' + item.searchKey + ']'];
         }
-        this.params['filter[' + this.searchBy + ']'] = value;
+        if (this.searchValue) {
+            this.params['filter[' + this.searchBy + ']'] = value;
+        }
         this.page = 1;
         this.pagination();
     }
@@ -247,8 +251,11 @@ export class DataTableXComponent implements OnInit {
         this.pagination();
     }
     public onSearchDropdown() {
-        if (this.searchValue) {
-            this.clearSearch();
+        for (const item of this.searchItems) {
+            if (item.searchKey === this.searchBy) {
+                this.searchName = item.name;
+            }
         }
+        this.onSearch(this.searchValue);
     }
 }
