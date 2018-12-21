@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewEncapsulation, ContentChild, TemplateRef, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Subject } from 'rxjs';
+import { Subject, throwError as observableThrowError } from 'rxjs';
 import { catchError, timeout, tap } from 'rxjs/operators';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
@@ -22,6 +22,7 @@ export class DataTableXComponent implements OnInit {
     @ContentChild('selectedBtnsGroups') public selectedBtnsGroups: TemplateRef<any>;
     @ContentChild('btnGroups') public btnGroups: TemplateRef<any>;
     public watchSuccess: Subject<any> = new Subject();
+    public watchError: Subject<any> = new Subject();
     public params: any = {};
     public rowsIndex: number = 0;
     public rows: any = [];
@@ -43,6 +44,7 @@ export class DataTableXComponent implements OnInit {
     public totalRecords: any;
     public checkBoxPrefix = Math.random().toString(36).slice(2);
     public spinner = true;
+    public ngxError: any;
     private http: HttpClient;
     public searchCtrl: FormControl;
     constructor(@Inject(HttpClient) http: HttpClient) {
@@ -122,13 +124,17 @@ export class DataTableXComponent implements OnInit {
         );
     }
     public handleSuccess(data: any) {
+        this.ngxError = {};
         setTimeout(() => {
             this.addSearch = true;
         }, 350);
         return data;
     }
     public handleError(error: any) {
-        return error;
+        this.spinner = false;
+        this.ngxError = error;
+        this.watchError.next(error);
+        return observableThrowError(error || 'Server error');
     }
     public onPage(event: any) {
         this.selectedCount = 0;
