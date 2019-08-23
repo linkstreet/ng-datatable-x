@@ -16,11 +16,11 @@ export class DataTableXComponent implements OnInit {
     public columns: any[];
     public route: any;
     public colSpans: any[];
-    @ContentChild('tablerow') public tablerow: TemplateRef<any>;
-    @ContentChild('rowGroups') public rowGroups: TemplateRef<any>;
-    @ContentChild('rowDetails') public rowDetails: TemplateRef<any>;
-    @ContentChild('selectedBtnsGroups') public selectedBtnsGroups: TemplateRef<any>;
-    @ContentChild('btnGroups') public btnGroups: TemplateRef<any>;
+    @ContentChild('tablerow', { static: false }) public tablerow: TemplateRef<any>;
+    @ContentChild('rowGroups', { static: false }) public rowGroups: TemplateRef<any>;
+    @ContentChild('rowDetails', { static: false }) public rowDetails: TemplateRef<any>;
+    @ContentChild('selectedBtnsGroups', { static: false }) public selectedBtnsGroups: TemplateRef<any>;
+    @ContentChild('btnGroups', { static: false }) public btnGroups: TemplateRef<any>;
     public watchSuccess: Subject<any> = new Subject();
     public watchError: Subject<any> = new Subject();
     public params: any = {};
@@ -246,13 +246,6 @@ export class DataTableXComponent implements OnInit {
         this.onSelectAll(false);
         if (this.enableSearch) {
             this.clearSearch();
-        }
-        const index = this.config.defaultSortColumnIndex;
-        if (index != null && index >= 0) {
-            this.setDefaultSorting(this.columns[index].searchKey, this.columns[index].sortable);
-        } else {
-            this.sorting.column = '';
-            delete this.params.sort_by;
         }
         this.pagination();
     }
