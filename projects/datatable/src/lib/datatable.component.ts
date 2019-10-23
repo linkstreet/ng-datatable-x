@@ -4,6 +4,7 @@ import { Subject, throwError as observableThrowError } from 'rxjs';
 import { catchError, timeout, tap } from 'rxjs/operators';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
+import * as _ from 'lodash';
 
 @Component({
     selector: 'ng-datatable-x',
@@ -47,10 +48,13 @@ export class DataTableXComponent implements OnInit {
     public ngxError: any;
     private http: HttpClient;
     public searchCtrl: FormControl;
+    public sortByColumn: any = [];
+    public sortCols: any = [];
     constructor(@Inject(HttpClient) http: HttpClient) {
         this.http = http;
         this.searchCtrl = new FormControl();
     }
+    
     public ngOnInit() {
         if (this.config.spinner != undefined) {
             this.spinner = this.config.spinner;
@@ -63,6 +67,7 @@ export class DataTableXComponent implements OnInit {
             });
         this.initDataTable();
     }
+
     public initDataTable() {
         this.route = this.config.route;
         this.columns = this.config.columns;
@@ -70,6 +75,7 @@ export class DataTableXComponent implements OnInit {
         if (this.route) {
             const searchableCols = this.columns.filter((column: any) => (column.searchable === true));
             this.setFilterColumns(searchableCols);
+            this.loadDatatable();
             const index = this.config.defaultSortColumnIndex;
             if (index != null && index >= 0) {
                 this.setDefaultSorting(this.columns[index].searchKey, this.columns[index].sortable);
@@ -84,6 +90,7 @@ export class DataTableXComponent implements OnInit {
             this.searchName = columns[0].name;
         }
     }
+
     public pagination() {
         this.dataLoaded = false;
         if (this.page === 1) {
@@ -109,6 +116,7 @@ export class DataTableXComponent implements OnInit {
             this.dataLoaded = true;
         });
     }
+
     public get() {
         return this.http.get(this.route, {
             headers: this.config.httpHeaders,
@@ -123,6 +131,7 @@ export class DataTableXComponent implements OnInit {
             }),
         );
     }
+
     public handleSuccess(data: any) {
         this.ngxError = {};
         setTimeout(() => {
@@ -130,18 +139,21 @@ export class DataTableXComponent implements OnInit {
         }, 350);
         return data;
     }
+
     public handleError(error: any) {
         this.spinner = false;
         this.ngxError = error;
         this.watchError.next(error);
         return observableThrowError(error || 'Server error');
     }
+
     public onPage(event: any) {
         this.selectedCount = 0;
         this.selectAll = false;
         this.page = event;
         this.pagination();
     }
+
     public onSearch(value: any) {
         this.selectedCount = 0;
         this.selectAll = false;
@@ -154,6 +166,7 @@ export class DataTableXComponent implements OnInit {
         this.page = 1;
         this.pagination();
     }
+
     public clearSearch() {
         this.selectedCount = 0;
         this.selectAll = false;
@@ -165,37 +178,13 @@ export class DataTableXComponent implements OnInit {
         this.page = 1;
         this.pagination();
     }
+
     public loadDatatable() {
+        this.sortCols = [];
+        delete this.params['sort_by'];
         this.clearSearch();
     }
-    public sortClass(columnName: any): any {
-        const iconClass = 'sort-icon mdi ';
-        const asc = this.sorting.ascending;
-        if (columnName === this.sorting.column) {
-            return asc ? iconClass + 'mdi-arrow-down' : iconClass + 'mdi-arrow-up';
-        } else {
-            return;
-        }
-    }
-    public changeSorting(columnName: any, sortable: any): void {
-        if (sortable && columnName) {
-            this.selectedCount = 0;
-            this.selectAll = false;
-            const sort = this.sorting;
-            if (sort.column === columnName) {
-                sort.ascending = !sort.ascending;
-            } else {
-                sort.column = columnName;
-                sort.ascending = true;
-            }
-            if (!sort.ascending) {
-                columnName = '-' + columnName;
-            }
-            this.params.sort_by = columnName;
-            this.page = 1;
-            this.pagination();
-        }
-    }
+
     public setDefaultSorting(columnName: any, sortable: any) {
         if (sortable && columnName) {
             if (!this.config.defaultSortOrderDesc) {
@@ -206,9 +195,117 @@ export class DataTableXComponent implements OnInit {
                 this.params.sort_by = '-' + columnName;
             }
             this.sorting.column = columnName;
-            this.sortClass(columnName);
+            this.sortByColumn = columnName;
+            this.sortCols.push({ "name": columnName, "clicked": 2, "direction": -1 });
         }
     }
+
+    public sortClass(columnName: any): any {
+        const iconClass = 'sort-icon mdi ';
+        if (!this.config.multiSorting) {
+            const asc = this.sorting.ascending;
+            if (columnName === this.sorting.column) {
+                return asc ? iconClass + 'mdi-arrow-down' : iconClass + 'mdi-arrow-up';
+            } else {
+                return;
+            }
+        } else {
+            if (this.sortCols.length > 0) {
+                let selectCol = this.filterArray(this.sortCols, 'name', columnName);
+                if (selectCol) {
+                    return selectCol.direction === 1 ? iconClass + 'mdi-arrow-down' : iconClass + 'mdi-arrow-up';
+                } else {
+                    return;
+                }
+            } else {
+                return;
+            }
+        }
+    }
+
+    public changeSorting(columnName: any, sortable: any): void {
+        if (sortable && columnName) {
+            this.selectedCount = 0;
+            this.selectAll = false;
+            if (!this.config.multiSorting) {
+                const sort = this.sorting;
+                if (sort.column === columnName) {
+                    sort.ascending = !sort.ascending;
+                } else {
+                    sort.column = columnName;
+                    sort.ascending = true;
+                }
+                if (!sort.ascending) {
+                    columnName = '-' + columnName;
+                }
+                this.params.sort_by = columnName;
+            } else {
+                let tmp = this.sortByColumn.length ? this.sortByColumn.split(',') : [];
+                const i = _.indexOf(tmp, columnName);
+                if (i >= 0) {
+                    tmp.splice(i, 1);
+                } else {
+                    tmp.push(columnName);
+                }
+                this.sortByColumn = tmp.join(',');
+                let selectCol = _.find(this.sortCols, { name: columnName });
+                if (selectCol) {
+                    this.click(selectCol);
+                    let index = _.findIndex(this.sortCols, { name: columnName });
+                    this.sortCols.splice(index, 1, selectCol);
+                } else {
+                    this.sortCols.push({ "name": columnName, "clicked": 1, "direction": 1 })
+                }
+
+                let sortByarr = [];
+                console.log(this.sortCols, 'this.sortCols')
+                this.sortCols.forEach((obj: any) => {
+                    if (obj.direction !== 0) {
+                        sortByarr.push(obj.direction === 1 ? obj.name : '-' + obj.name);
+                    } else {
+                        const index = this.sortCols.indexOf(obj);
+                        this.sortCols.splice(index, 1);
+                    }
+                });
+                if (sortByarr.length > 0) {
+                    this.params.sort_by = sortByarr.join();
+                } else {
+                    delete this.params['sort_by'];
+                }
+            }
+            this.page = 1;
+            this.pagination();
+        }
+    }
+
+    public filterArray(arr: any[], key: string, value: any) {
+        if (arr && arr.length > 0) {
+            const obj = arr.filter((trans) => (trans[key] === value));
+            return obj[0];
+        }
+        return {};
+    }
+
+    public click(selectCol: any) {
+        selectCol.clicked++;
+        this.chechDirection(selectCol);
+    }
+
+    public chechDirection(selectCol: any) {
+        const mod = selectCol.clicked % 3;
+        switch (mod) {
+            case 0:
+                selectCol.direction = 0;
+                break;
+            case 1:
+                selectCol.direction = 1;
+                break;
+            case 2:
+                selectCol.direction = -1;
+                break;
+        }
+    }
+
     public showPerPage(val: any) {
         this.searchValue = '';
         this.params.search = '';
@@ -216,6 +313,7 @@ export class DataTableXComponent implements OnInit {
         this.page = 1;
         this.pagination();
     }
+
     public toggleExpandAll() {
         this.expandAll = !this.expandAll;
         const expand = this.expandAll;
@@ -223,6 +321,7 @@ export class DataTableXComponent implements OnInit {
             obj.expanded = expand;
         });
     }
+
     public onCheckboxChange(row: any): void {
         this.rows.forEach((obj: any) => {
             if (obj === row) {
@@ -231,9 +330,11 @@ export class DataTableXComponent implements OnInit {
         });
         this.selectedCount = this.getSelected().length;
     }
+
     public getSelected() {
         return this.rows.filter((x: any) => x.selected);
     }
+
     public onSelectAll(selectAll: any) {
         this.selectAll = selectAll;
         this.rows.forEach((obj: any) => {
@@ -241,6 +342,7 @@ export class DataTableXComponent implements OnInit {
         });
         this.selectedCount = this.getSelected().length;
     }
+
     public refresh() {
         this.spinner = true;
         this.onSelectAll(false);
