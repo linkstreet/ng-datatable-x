@@ -54,7 +54,7 @@ export class DataTableXComponent implements OnInit {
         this.http = http;
         this.searchCtrl = new FormControl();
     }
-    
+
     public ngOnInit() {
         if (this.config.spinner != undefined) {
             this.spinner = this.config.spinner;
@@ -92,6 +92,7 @@ export class DataTableXComponent implements OnInit {
     }
 
     public pagination() {
+        this.spinner = true;
         this.dataLoaded = false;
         if (this.page === 1) {
             this.rowsIndex = 0;
@@ -182,6 +183,10 @@ export class DataTableXComponent implements OnInit {
     public loadDatatable() {
         this.sortCols = [];
         delete this.params['sort_by'];
+        const index = this.config.defaultSortColumnIndex;
+        if (index != null && index >= 0) {
+            this.setDefaultSorting(this.columns[index].searchKey, this.columns[index].sortable);
+        }
         this.clearSearch();
     }
 
