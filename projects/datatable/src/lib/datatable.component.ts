@@ -201,7 +201,11 @@ export class DataTableXComponent implements OnInit {
             }
             this.sorting.column = columnName;
             this.sortByColumn = columnName;
-            this.sortCols.push({ "name": columnName, "clicked": 2, "direction": -1 });
+            if (!this.config.defaultSortOrderDesc) {
+                this.sortCols.push({ "name": columnName, "clicked": 1, "direction": 1 });
+            } else {
+                this.sortCols.push({ "name": columnName, "clicked": 2, "direction": -1 });
+            }
         }
     }
 
