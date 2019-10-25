@@ -195,17 +195,14 @@ export class DataTableXComponent implements OnInit {
             if (!this.config.defaultSortOrderDesc) {
                 this.sorting.ascending = true;
                 this.params.sort_by = columnName;
+                this.sortCols.push({ "name": columnName, "clicked": 1, "direction": 1 });
             } else {
                 this.sorting.ascending = false;
                 this.params.sort_by = '-' + columnName;
+                this.sortCols.push({ "name": columnName, "clicked": 2, "direction": -1 });
             }
             this.sorting.column = columnName;
             this.sortByColumn = columnName;
-            if (!this.config.defaultSortOrderDesc) {
-                this.sortCols.push({ "name": columnName, "clicked": 1, "direction": 1 });
-            } else {
-                this.sortCols.push({ "name": columnName, "clicked": 2, "direction": -1 });
-            }
         }
     }
 
@@ -267,7 +264,6 @@ export class DataTableXComponent implements OnInit {
                 }
 
                 let sortByarr = [];
-                console.log(this.sortCols, 'this.sortCols')
                 this.sortCols.forEach((obj: any) => {
                     if (obj.direction !== 0) {
                         sortByarr.push(obj.direction === 1 ? obj.name : '-' + obj.name);
