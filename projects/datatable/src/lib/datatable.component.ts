@@ -75,12 +75,11 @@ export class DataTableXComponent implements OnInit {
         if (this.route) {
             const searchableCols = this.columns.filter((column: any) => (column.searchable === true));
             this.setFilterColumns(searchableCols);
-            this.loadDatatable();
             const index = this.config.defaultSortColumnIndex;
             if (index != null && index >= 0) {
                 this.setDefaultSorting(this.columns[index].searchKey, this.columns[index].sortable);
             }
-            this.pagination();
+            this.loadDatatable();
         }
     }
     public setFilterColumns(columns: any[]) {
