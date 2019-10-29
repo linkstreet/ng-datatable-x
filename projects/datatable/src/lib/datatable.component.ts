@@ -352,8 +352,9 @@ export class DataTableXComponent implements OnInit {
         this.onSelectAll(false);
         if (this.enableSearch) {
             this.clearSearch();
+        } else {
+            this.pagination();
         }
-        this.pagination();
     }
     public onSearchDropdown() {
         for (const item of this.searchItems) {
