@@ -277,11 +277,12 @@ export class DataTableXComponent implements OnInit {
                     this.params.sort_by = sortByarr.join();
                 } else {
                     delete this.params['sort_by'];
-                    if ( this.sortCols[0].direction === 0 ) {
+                    if (this.sortCols[0].direction === 0) {
                         this.sortCols[0].direction = 1;
                         this.sortCols[0].clicked++;
-                        this.params.sort_by = this.sortCols[0].name;
                     }
+                    const sortByName = this.sortCols[0].name;
+                    this.params.sort_by = this.sortCols[0].direction === 1 ? sortByName : '-' + sortByName;
                 }
             }
             this.page = 1;
