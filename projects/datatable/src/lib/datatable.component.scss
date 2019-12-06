@@ -29,8 +29,19 @@
                 .expand-row-icon {
                     color: rgba(0, 0, 0, 0.38);
                 }
-                .sort-icon {
-                    font-size: 13px;
+                .sort-icon-set {
+                    position: absolute;
+                    margin-top: 1px;
+                     .mdi-menu-up {
+                        position: relative;
+                        font-size: 18px;
+                        top: -10px;
+                     }
+                     .mdi-menu-down {
+                        position: relative;
+                        font-size: 20px;
+                        left: -20px;
+                     }
                 }
             }
             td {

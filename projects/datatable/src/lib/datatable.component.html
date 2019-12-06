@@ -86,11 +86,9 @@
                                 <ng-template [ngIf]="column.name">
                                     <span class="col-title" [innerHtml]="column.name"></span>
                                 </ng-template>
-                                <span *ngIf="column.sortable">
-                                    <i class="mdi mdi-arrow-up" [ngClass]="{'sort-active-icon':sortClass(column.searchKey) === 'up'}"
-                                    style="font-size: 14px;"></i>
-                                    <i class="mdi mdi-arrow-down" [ngClass]="{'sort-active-icon':sortClass(column.searchKey) ==='down'}" 
-                                    style="position: relative;left: -3px;font-size: 14px;"></i>
+                                <span class="sort-icon-set" *ngIf="column.sortable">
+                                    <i class="mdi mdi-menu-up" [ngClass]="{'sort-active-icon':sortClass(column.searchKey) === 'up'}"></i>
+                                    <i class="mdi mdi-menu-down" [ngClass]="{'sort-active-icon':sortClass(column.searchKey) ==='down'}"></i>
                                 </span>
                             </th>
                         </ng-template>
