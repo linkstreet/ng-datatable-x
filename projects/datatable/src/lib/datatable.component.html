@@ -13,7 +13,7 @@
         <nav class="navbar navbar-table-top navbar-header" *ngIf="!selectedCount">
             <div class="d-flex justify-content-between">
                 <div class="navbar-text" [innerHTML]="config.title"></div>
-                <form class="form-inline">
+                <form class="form-inline" *ngIf="refreshButton">
                     <div class="btn-group-1" role="group">
                         <button type="button" class="btn btn-icon-only btn-icon-lg" placement="top" tooltipClass="tooltip-top" ngbTooltip="Refresh"
                             container="body" (click)="refresh();">
@@ -81,13 +81,16 @@
                             Sn
                         </th>
                         <ng-template ngFor let-column [ngForOf]="columns">
-                            <th class="{{column.class}}" [ngClass]="{'cursor-pointer':column.sortable}" (click)="changeSorting(column.searchKey,column.sortable)"
+                            <th class="{{column.class}}" [ngClass]="{'sortable-active-column cursor-pointer':column.sortable}" (click)="changeSorting(column.searchKey,column.sortable)"
                                 nowrap="nowrap">
                                 <ng-template [ngIf]="column.name">
                                     <span class="col-title" [innerHtml]="column.name"></span>
                                 </ng-template>
-                                <span *ngIf="column.sortable && sortClass(column.searchKey)">
-                                    <i [class]="sortClass(column.searchKey)"></i>
+                                <span *ngIf="column.sortable">
+                                    <i class="mdi mdi-arrow-up" [ngClass]="{'sort-active-icon':sortClass(column.searchKey) === 'up'}"
+                                    style="font-size: 14px;"></i>
+                                    <i class="mdi mdi-arrow-down" [ngClass]="{'sort-active-icon':sortClass(column.searchKey) ==='down'}" 
+                                    style="position: relative;left: -3px;font-size: 14px;"></i>
                                 </span>
                             </th>
                         </ng-template>

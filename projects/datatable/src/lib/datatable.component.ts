@@ -50,6 +50,7 @@ export class DataTableXComponent implements OnInit {
     public searchCtrl: FormControl;
     public sortByColumn: any = [];
     public sortCols: any = [];
+    public refreshButton= true;
     constructor(@Inject(HttpClient) http: HttpClient) {
         this.http = http;
         this.searchCtrl = new FormControl();
@@ -206,11 +207,10 @@ export class DataTableXComponent implements OnInit {
     }
 
     public sortClass(columnName: any): any {
-        const iconClass = 'sort-icon mdi ';
         if (!this.config.multiSorting) {
             const asc = this.sorting.ascending;
             if (columnName === this.sorting.column) {
-                return asc ? iconClass + 'mdi-arrow-down' : iconClass + 'mdi-arrow-up';
+                return asc ? 'down' :  'up';
             } else {
                 return;
             }
@@ -218,7 +218,7 @@ export class DataTableXComponent implements OnInit {
             if (this.sortCols.length > 0) {
                 let selectCol = this.filterArray(this.sortCols, 'name', columnName);
                 if (selectCol) {
-                    return selectCol.direction === 1 ? iconClass + 'mdi-arrow-down' : iconClass + 'mdi-arrow-up';
+                    return selectCol.direction === 1 ? 'down' : 'up';
                 } else {
                     return;
                 }
@@ -358,7 +358,7 @@ export class DataTableXComponent implements OnInit {
     public refresh() {
         this.spinner = true;
         this.onSelectAll(false);
-        if (this.enableSearch) {
+        if (!this.searchValue) {
             this.clearSearch();
         } else {
             this.pagination();
