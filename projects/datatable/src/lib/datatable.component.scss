@@ -31,17 +31,26 @@
                 }
                 .sort-icon-set {
                     position: absolute;
-                    margin-top: 1px;
+                    margin-top: 2px;
                      .mdi-menu-up {
                         position: relative;
-                        font-size: 18px;
-                        top: -10px;
+                        font-size: 16px;
+                        top: -9px;
                      }
                      .mdi-menu-down {
                         position: relative;
-                        font-size: 20px;
-                        left: -20px;
+                        font-size: 16px;
+                        left: -16px;
+                        top: -2px;
                      }
+                }
+                .sortby {
+                    position: absolute;
+                    .sort-active-icon {
+                        position: relative;
+                        font-size: 22px;
+                        top: -9px;
+                    }
                 }
             }
             td {
