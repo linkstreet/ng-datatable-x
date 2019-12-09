@@ -13,9 +13,9 @@
         <nav class="navbar navbar-table-top navbar-header" *ngIf="!selectedCount">
             <div class="d-flex justify-content-between">
                 <div class="navbar-text" [innerHTML]="config.title"></div>
-                <form class="form-inline" *ngIf="refreshButton">
+                <form class="form-inline">
                     <div class="btn-group-1" role="group">
-                        <button type="button" class="btn btn-icon-only btn-icon-lg" placement="top" tooltipClass="tooltip-top" ngbTooltip="Refresh"
+                        <button type="button" *ngIf="refreshButton" class="btn btn-icon-only btn-icon-lg" placement="top" tooltipClass="tooltip-top" ngbTooltip="Refresh"
                             container="body" (click)="refresh();">
                             <i class="mdi mdi-refresh"></i>
                         </button>
