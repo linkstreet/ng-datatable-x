@@ -92,7 +92,11 @@ export class DataTableXComponent implements OnInit {
     }
 
     public pagination() {
-        this.spinner = true;
+        if (this.config.spinner != undefined) {
+            this.spinner = this.config.spinner;
+        } else {
+            this.spinner = true;
+        }
         this.dataLoaded = false;
         if (this.page === 1) {
             this.rowsIndex = 0;
@@ -356,7 +360,11 @@ export class DataTableXComponent implements OnInit {
     }
 
     public refresh() {
-        this.spinner = true;
+        if (this.config.spinner != undefined) {
+            this.spinner = this.config.spinner;
+        } else {
+            this.spinner = true;
+        }
         this.onSelectAll(false);
         if (!this.searchValue) {
             this.clearSearch();
