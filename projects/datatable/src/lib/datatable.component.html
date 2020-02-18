@@ -88,9 +88,7 @@
                                 </ng-template>
                                 <span *ngIf="column.sortable">
                                     <span  class="sort-icon-set" *ngIf="!sortClass(column.searchKey);else sortby">
-                                        <i class="mdi mdi-menu-up" 
-                                        [ngClass]="{'sort-active-icon':sortClass(column.searchKey) === 'up'}"></i>
-                                        <i class="mdi mdi-menu-down" [ngClass]="{'sort-active-icon':sortClass(column.searchKey) ==='down'}"></i>
+                                        <i class="mdi mdi-menu-swap"></i>
                                     </span>
                                     <ng-template #sortby>
                                         <span class="sortby">
