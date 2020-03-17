@@ -163,5 +163,8 @@
       }
     }
   },
-  "defaultProject": "ng-datatable-x"
+  "defaultProject": "ng-datatable-x",
+  "cli": {
+    "analytics": "2211c469-2c51-4494-b0a0-8d39546cd52d"
+  }
 }

@@ -1,9 +1,10 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {MatInputModule, MatSelectModule} from '@angular/material';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import { HttpClientModule } from '@angular/common/http';
+import {MatInputModule} from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
+import {NgbPaginationModule, NgbTooltipModule} from '@ng-bootstrap/ng-bootstrap';
+import {HttpClientModule} from '@angular/common/http';
 import {DataTableXComponent} from './datatable.component';
 @NgModule({
     imports: [
@@ -12,7 +13,8 @@ import {DataTableXComponent} from './datatable.component';
     ReactiveFormsModule,
     MatInputModule,
     MatSelectModule,
-    NgbModule,
+    NgbPaginationModule,
+    NgbTooltipModule,
     HttpClientModule
     ],
     declarations: [
