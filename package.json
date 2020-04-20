@@ -43,7 +43,7 @@
     "@angular/platform-browser": "^9.0.6",
     "@angular/platform-browser-dynamic": "^9.0.6",
     "@angular/router": "^9.0.6",
-    "@ng-bootstrap/ng-bootstrap": "^6.0.0",
+    "@ng-bootstrap/ng-bootstrap": "^6.0.3",
     "lodash": "4.17.15",
     "@types/lodash": "4.14.109",
     "set-value": "^3.0.1",
