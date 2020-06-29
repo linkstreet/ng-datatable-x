@@ -45,7 +45,7 @@
     "@angular/router": "^9.1.9",
     "@ng-bootstrap/ng-bootstrap": "^6.1.0",
     "lodash": "4.17.15",
-    "@types/lodash": "4.14.154",
+    "@types/lodash": "4.14.157",
     "set-value": "^3.0.2",
     "core-js": "^3.6.5",
     "rxjs": "^6.5.5",
