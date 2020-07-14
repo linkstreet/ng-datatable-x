@@ -105,7 +105,7 @@
                 </thead>
                 <tbody>
                     <ng-template ngFor let-n="index" let-row [ngForOf]="rows">
-                        <tr>
+                        <tr class="row-{{n}}">
                             <td class="w50" *ngIf="config.selectable">
                                 <div class="custom-control custom-checkbox table-custom-checkbox">
                                     <input type="checkbox" id="Row{{checkBoxPrefix}}{{n}}" class="custom-control-input"
