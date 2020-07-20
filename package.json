@@ -44,7 +44,7 @@
     "@angular/platform-browser-dynamic": "^9.1.9",
     "@angular/router": "^9.1.9",
     "@ng-bootstrap/ng-bootstrap": "^6.1.0",
-    "lodash": "4.17.15",
+    "lodash": "4.17.19",
     "@types/lodash": "4.14.154",
     "set-value": "^3.0.2",
     "core-js": "^3.6.5",
