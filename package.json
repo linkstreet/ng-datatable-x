@@ -41,7 +41,7 @@
     "@angular/localize": "^9.1.9",
     "@angular/material": "^9.2.4",
     "@angular/platform-browser": "^9.1.9",
-    "@angular/platform-browser-dynamic": "^9.1.9",
+    "@angular/platform-browser-dynamic": "^10.0.10",
     "@angular/router": "^9.1.9",
     "@ng-bootstrap/ng-bootstrap": "^6.1.0",
     "lodash": "4.17.15",
