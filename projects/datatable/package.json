@@ -1,6 +1,6 @@
 {
   "name": "@linkstreet/ng-datatable-x",
-  "version": "10.0.0",
+  "version": "10.2.0",
   "author": {
     "name": "Linkstreet"
   },
@@ -13,7 +13,7 @@
   },
   "homepage": "https://github.com/linkstreet/ng-datatable-x#readme",
   "peerDependencies": {
-    "@angular/common": "^10.1.3",
-    "@angular/core": "^10.1.3"
+    "@angular/common": "^10.1.4",
+    "@angular/core": "^10.1.4"
   }
 }
