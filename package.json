@@ -52,6 +52,7 @@
     "object-path": "^0.11.8",
     "rxjs": "^7.8.0",
     "set-value": "^4.1.0",
+    "socket.io": "^4.7.2",
     "webpack-subresource-integrity": "^5.1.0",
     "zone.js": "0.12.0"
   },
