@@ -4,7 +4,6 @@ import { Subject, throwError as observableThrowError } from 'rxjs';
 import { catchError, timeout, tap } from 'rxjs/operators';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
-import * as _ from 'lodash';
 
 @Component({
     selector: 'ng-datatable-x',
@@ -50,7 +49,7 @@ export class DataTableXComponent implements OnInit {
     public searchCtrl: FormControl;
     public sortByColumn: any = [];
     public sortCols: any = [];
-    public refreshButton= true;
+    public refreshButton = true;
     constructor(@Inject(HttpClient) http: HttpClient) {
         this.http = http;
         this.searchCtrl = new FormControl();
@@ -214,7 +213,7 @@ export class DataTableXComponent implements OnInit {
         if (!this.config.multiSorting) {
             const asc = this.sorting.ascending;
             if (columnName === this.sorting.column) {
-                return asc ? 'down' :  'up';
+                return asc ? 'down' : 'up';
             } else {
                 return;
             }
