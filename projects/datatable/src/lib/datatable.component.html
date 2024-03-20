@@ -1,225 +1,314 @@
 @if (route) {
-  <div class="ng-datatable-x">
-    @if (config.navbarVisible) {
-      @if (selectedCount>0) {
-        <nav class="navbar navbar-table-top navbar-selected">
-          <div class="d-flex justify-content-between">
-            <span class="navbar-text">{{selectedCount}} Selected / {{count}} total</span>
-            <form class="form-inline">
-              <div class="btn-group" role="group">
-                <ng-template [ngTemplateOutlet]="selectedBtnsGroups"></ng-template>
-              </div>
-            </form>
-          </div>
-        </nav>
-      }
-      @if (!selectedCount) {
-        <nav class="navbar navbar-table-top navbar-header">
-          <div class="d-flex justify-content-between">
-            <div class="navbar-text" [innerHTML]="config.title"></div>
-            <form class="form-inline">
-              <div class="btn-group-1" role="group">
-                @if (refreshButton) {
-                  <button type="button" class="btn btn-icon-only btn-icon-lg" placement="top" tooltipClass="tooltip-top" ngbTooltip="Refresh"
-                    container="body" (click)="refresh();">
-                    <i class="mdi mdi-refresh"></i>
-                  </button>
-                }
-                <ng-template [ngTemplateOutlet]="btnGroups"></ng-template>
-              </div>
-            </form>
-          </div>
-        </nav>
-      }
-      @if (config.search) {
-        <nav class="navbar navbar-search">
-          <div class="input-group">
-            <div class="input-group-prepend mr-0">
-              <span class="input-group-text">
-                <i class="mdi mdi-magnify"></i>
-              </span>
-            </div>
-            @if (searchBy && searchItems.length > 1) {
-              <div class="input-group-btn">
-                <mat-form-field>
-                  <mat-select [(ngModel)]="searchBy" (selectionChange)="onSearchDropdown();" name="filterby">
-                    @for (item of searchItems; track item) {
-                      <mat-option [value]="item.searchKey">
-                        {{ item.name }}
-                      </mat-option>
-                    }
-                  </mat-select>
-                </mat-form-field>
-              </div>
-            }
-            <input type="text" class="form-control search-by" placeholder="Search {{(searchItems.length === 1 ? searchItems[0]['name'] : searchName )}}"
-              autofocus [(ngModel)]="searchValue" [formControl]="searchCtrl">
-            @if (searchValue) {
-              <div (click)="clearSearch();" class="input-group-append cursor-pointer">
-                <span class="input-group-text">
-                  <i class="mdi mdi-close"></i>
-                </span>
-              </div>
-            }
-          </div>
-        </nav>
-      }
-    }
-    <div class='tab-content-dt' [ngClass]="{'loading-dt': (!dataLoaded && spinner)}">
-      <div class="datatable table-responsive">
-        <table class="table">
-          @if (config.headerVisible) {
-            <thead>
-              @if (config.colSpan) {
-                <tr class="row-span">
-                  @for (col of colSpans; track col) {
-                    <th class="{{col.class}}" nowrap="nowrap" [attr.colspan]="col.count">
-                      @if (col.name) {
-                        <span class="col-title" [innerHtml]="col.name"></span>
-                      }
-                    </th>
-                  }
-                </tr>
-              }
-              <tr>
-                @if (config.selectable) {
-                  <th class="w50" nowrap="nowrap">
-                    <div class="custom-control custom-checkbox table-custom-checkbox">
-                      <input type="checkbox" id="Header{{checkBoxPrefix}}" class="custom-control-input"
-                        [checked]="selectAll" (change)="onSelectAll(selectAll)" [(ngModel)]="selectAll">
-                      <label class="custom-control-label custom-control-indicator" for="Header{{checkBoxPrefix}}"></label>
-                    </div>
-                  </th>
-                }
-                @if (config.expandable) {
-                  <th class="w50" nowrap="nowrap">
-                    <button type="button" class="btn btn-icon-only expand-row-icon" title="Expand/Collapse All"
-                      (click)="toggleExpandAll()">
-                      <i class="mdi" [ngClass]='{"mdi-arrow-expand-all":!expandAll, "mdi-arrow-collapse-all":expandAll}'></i>
-                    </button>
-                  </th>
-                }
-                <th [attr.class]="config.serialNumber" nowrap="nowrap">
-                  Sn
-                </th>
-                @for (column of columns; track column) {
-                  <th class="{{column.class}}" [ngClass]="{'sortable-active-column cursor-pointer':column.sortable}" (click)="changeSorting(column.searchKey,column.sortable)"
-                    nowrap="nowrap">
-                    @if (column.name) {
-                      <span class="col-title" [innerHtml]="column.name"></span>
-                    }
-                    @if (column.sortable) {
-                      <span>
-                        @if (!sortClass(column.searchKey)) {
-                          <span  class="sort-icon-set">
-                            <i class="mdi mdi-menu-swap"></i>
-                          </span>
-                        } @else {
-                          <span class="sortby">
-                            <i class="mdi sort-active-icon"
-                                            [ngClass]="{'mdi-menu-up':sortClass(column.searchKey) === 'up',
-                                            'mdi-menu-down':sortClass(column.searchKey) === 'down'}">
-                            </i>
-                          </span>
-                        }
-                        <ng-template #sortby>
-                          <span class="sortby">
-                            <i class="mdi sort-active-icon"
-                                            [ngClass]="{'mdi-menu-up':sortClass(column.searchKey) === 'up',
-                                            'mdi-menu-down':sortClass(column.searchKey) === 'down'}">
-                            </i>
-                          </span>
-                        </ng-template>
-                      </span>
-                    }
-                  </th>
-                }
-              </tr>
-            </thead>
+<div class="ng-datatable-x">
+  @if (config.navbarVisible) { @if (selectedCount>0) {
+  <nav class="navbar navbar-table-top navbar-selected">
+    <div class="d-flex justify-content-between">
+      <span class="navbar-text"
+        >{{ selectedCount }} Selected / {{ count }} total</span
+      >
+      <form class="form-inline">
+        <div class="btn-group" role="group">
+          <ng-template [ngTemplateOutlet]="selectedBtnsGroups"></ng-template>
+        </div>
+      </form>
+    </div>
+  </nav>
+  } @if (!selectedCount) {
+  <nav class="navbar navbar-table-top navbar-header">
+    <div class="d-flex justify-content-between">
+      <div class="navbar-text" [innerHTML]="config.title"></div>
+      <form class="form-inline">
+        <div class="btn-group-1" role="group">
+          @if (refreshButton) {
+          <button
+            type="button"
+            class="btn btn-icon-only btn-icon-lg"
+            placement="top"
+            tooltipClass="tooltip-top"
+            ngbTooltip="Refresh"
+            container="body"
+            (click)="refresh()"
+          >
+            <i class="mdi mdi-refresh"></i>
+          </button>
           }
-          <tbody>
-            @for (row of rows; track row; let n = $index) {
-              <tr class="row-{{n}}">
-                @if (config.selectable) {
-                  <td class="w50">
-                    <div class="custom-control custom-checkbox table-custom-checkbox">
-                      <input type="checkbox" id="Row{{checkBoxPrefix}}{{n}}" class="custom-control-input"
-                        [checked]="row.selected" (change)="onCheckboxChange(row)">
-                      <label class="custom-control-label custom-control-indicator" for="Row{{checkBoxPrefix}}{{n}}"></label>
-                    </div>
-                  </td>
-                }
-                @if (config.expandable) {
-                  <td class="w50">
-                    <button type="button" class="btn btn-icon-only expand-row-icon" title="Expand/Collapse Row"
-                      (click)="row.expanded = !row.expanded">
-                      <i class="mdi" [ngClass]='{"mdi-chevron-right":!row.expanded, "mdi-chevron-down":row.expanded}'></i>
-                    </button>
-                  </td>
-                }
-                <td [attr.class]="config.serialNumber">
-                  {{(n +1) + rowsIndex}}
-                </td>
-                <ng-template [ngTemplateOutlet]="rowGroups" [ngTemplateOutletContext]="{ $implicit: row }"></ng-template>
-              </tr>
-              @if (row.expanded) {
-                <tr class="expand-row">
-                  <td [attr.colspan]="columns.length + 3">
-                    <div class="card-block bg-faded">
-                      <div class='details'>
-                        <ng-template [ngTemplateOutlet]="rowDetails" [ngTemplateOutletContext]="{ $implicit: row }"></ng-template>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
+          <ng-template [ngTemplateOutlet]="btnGroups"></ng-template>
+        </div>
+      </form>
+    </div>
+  </nav>
+  } @if (config.search) {
+  <nav class="navbar navbar-search">
+    <div class="input-group">
+      <div class="input-group-prepend mr-0">
+        <span class="input-group-text">
+          <i class="mdi mdi-magnify"></i>
+        </span>
+      </div>
+      @if (searchBy && searchItems.length > 1) {
+      <div class="input-group-btn">
+        <mat-form-field>
+          <mat-select
+            [(ngModel)]="searchBy"
+            (selectionChange)="onSearchDropdown()"
+            name="filterby"
+          >
+            @for (item of searchItems; track item) {
+            <mat-option [value]="item.searchKey">
+              {{ item.name }}
+            </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+      }
+      <input
+        type="text"
+        class="form-control search-by"
+        placeholder="Search {{
+          searchItems.length === 1 ? searchItems[0]['name'] : searchName
+        }}"
+        autofocus
+        [(ngModel)]="searchValue"
+        [formControl]="searchCtrl"
+      />
+      @if (searchValue) {
+      <div (click)="clearSearch()" class="input-group-append cursor-pointer">
+        <span class="input-group-text">
+          <i class="mdi mdi-close"></i>
+        </span>
+      </div>
+      }
+    </div>
+  </nav>
+  } }
+  <div
+    class="tab-content-dt"
+    [ngClass]="{ 'loading-dt': !dataLoaded && spinner }"
+  >
+    <div class="datatable table-responsive">
+      <table class="table">
+        @if (config.headerVisible) {
+        <thead>
+          @if (config.colSpan) {
+          <tr class="row-span">
+            @for (col of colSpans; track col) {
+            <th
+              class="{{ col.class }}"
+              nowrap="nowrap"
+              [attr.colspan]="col.count"
+            >
+              @if (col.name) {
+              <span class="col-title" [innerHtml]="col.name"></span>
               }
+            </th>
             }
-            @if (rows.length === 0 && dataLoaded) {
-              <tr class="no-reults-found text-center">
-                @if (!searchValue) {
-                  <td [attr.colspan]="columns.length + 3" [innerHtml]="config.emptyMessage"></td>
-                }
-                @if (searchValue) {
-                  <td [attr.colspan]="columns.length + 3">No search results found.</td>
-                }
-              </tr>
+          </tr>
+          }
+          <tr>
+            @if (config.selectable) {
+            <th class="w50" nowrap="nowrap">
+              <div class="custom-control custom-checkbox table-custom-checkbox">
+                <input
+                  type="checkbox"
+                  id="Header{{ checkBoxPrefix }}"
+                  class="custom-control-input"
+                  [checked]="selectAll"
+                  (change)="onSelectAll(selectAll)"
+                  [(ngModel)]="selectAll"
+                />
+                <label
+                  class="custom-control-label custom-control-indicator"
+                  for="Header{{ checkBoxPrefix }}"
+                ></label>
+              </div>
+            </th>
+            } @if (config.expandable) {
+            <th class="w50" nowrap="nowrap">
+              <button
+                type="button"
+                class="btn btn-icon-only expand-row-icon"
+                title="Expand/Collapse All"
+                (click)="toggleExpandAll()"
+              >
+                <i
+                  class="mdi"
+                  [ngClass]="{
+                    'mdi-arrow-expand-all': !expandAll,
+                    'mdi-arrow-collapse-all': expandAll
+                  }"
+                ></i>
+              </button>
+            </th>
             }
-          </tbody>
-          @if (count) {
-            <tfoot>
-              <tr>
-                <td [attr.colspan]="columns.length + 3">
-                  <div class="dt-footer">
-                    <div class="d-flex justify-content-between">
-                      <div class="text-left">
-                        <div class="show_per_page">
-                          Show
-                          <mat-form-field>
-                            <mat-select floatPlaceholder="never" (change)="showPerPage(limit)"
-                              [(ngModel)]="limit">
-                              <mat-option [value]="15">15</mat-option>
-                            </mat-select>
-                          </mat-form-field>
-                        </div>
-                        <div class="show_total_count">
-                          {{ totalRecords }}
-                        </div>
-                      </div>
-                      <div class="text-right">
-                        @if (count > limit) {
-                          <ngb-pagination [collectionSize]="count" [(page)]="page"
-                            size="sm" [pageSize]="limit" [maxSize]="5" [rotate]="true" [ellipses]="false"
-                          [boundaryLinks]="true" (pageChange)="onPage($event)"></ngb-pagination>
-                        }
-                      </div>
+            <th [attr.class]="config.serialNumber" nowrap="nowrap">Sn</th>
+            @for (column of columns; track column) {
+            <th
+              class="{{ column.class }}"
+              [ngClass]="{
+                'sortable-active-column cursor-pointer': column.sortable
+              }"
+              (click)="changeSorting(column.searchKey, column.sortable)"
+              nowrap="nowrap"
+            >
+              @if (column.name) {
+              <span class="col-title" [innerHtml]="column.name"></span>
+              } @if (column.sortable) {
+              <span>
+                @if (!sortClass(column.searchKey)) {
+                <span class="sort-icon-set">
+                  <i class="mdi mdi-menu-swap"></i>
+                </span>
+                } @else {
+                <span class="sortby">
+                  <i
+                    class="mdi sort-active-icon"
+                    [ngClass]="{
+                      'mdi-menu-up': sortClass(column.searchKey) === 'up',
+                      'mdi-menu-down': sortClass(column.searchKey) === 'down'
+                    }"
+                  >
+                  </i>
+                </span>
+                }
+                <ng-template #sortby>
+                  <span class="sortby">
+                    <i
+                      class="mdi sort-active-icon"
+                      [ngClass]="{
+                        'mdi-menu-up': sortClass(column.searchKey) === 'up',
+                        'mdi-menu-down': sortClass(column.searchKey) === 'down'
+                      }"
+                    >
+                    </i>
+                  </span>
+                </ng-template>
+              </span>
+              }
+            </th>
+            }
+          </tr>
+        </thead>
+        }
+        <tbody>
+          @for (row of rows; track row; let n = $index) {
+          <tr class="row-{{ n }}">
+            @if (config.selectable) {
+            <td class="w50">
+              <div class="custom-control custom-checkbox table-custom-checkbox">
+                <input
+                  type="checkbox"
+                  id="Row{{ checkBoxPrefix }}{{ n }}"
+                  class="custom-control-input"
+                  [checked]="row.selected"
+                  (change)="onCheckboxChange(row)"
+                />
+                <label
+                  class="custom-control-label custom-control-indicator"
+                  for="Row{{ checkBoxPrefix }}{{ n }}"
+                ></label>
+              </div>
+            </td>
+            } @if (config.expandable) {
+            <td class="w50">
+              <button
+                type="button"
+                class="btn btn-icon-only expand-row-icon"
+                title="Expand/Collapse Row"
+                (click)="row.expanded = !row.expanded"
+              >
+                <i
+                  class="mdi"
+                  [ngClass]="{
+                    'mdi-chevron-right': !row.expanded,
+                    'mdi-chevron-down': row.expanded
+                  }"
+                ></i>
+              </button>
+            </td>
+            }
+            <td [attr.class]="config.serialNumber">
+              {{ n + 1 + rowsIndex }}
+            </td>
+            <ng-template
+              [ngTemplateOutlet]="rowGroups"
+              [ngTemplateOutletContext]="{ $implicit: row }"
+            ></ng-template>
+          </tr>
+          @if (row.expanded) {
+          <tr class="expand-row">
+            <td [attr.colspan]="columns.length + 3">
+              <div class="card-block bg-faded">
+                <div class="details">
+                  <ng-template
+                    [ngTemplateOutlet]="rowDetails"
+                    [ngTemplateOutletContext]="{ $implicit: row }"
+                  ></ng-template>
+                </div>
+              </div>
+            </td>
+          </tr>
+          } } @if (rows.length === 0 && dataLoaded) {
+          <tr class="no-reults-found text-center">
+            @if (!searchValue) {
+            <td
+              [attr.colspan]="columns.length + 3"
+              [innerHtml]="config.emptyMessage"
+            ></td>
+            } @if (searchValue) {
+            <td [attr.colspan]="columns.length + 3">
+              No search results found.
+            </td>
+            }
+          </tr>
+          }
+        </tbody>
+        @if (count) {
+        <tfoot>
+          <tr>
+            <td [attr.colspan]="columns.length + 3">
+              <div class="dt-footer">
+                <div class="d-flex justify-content-between">
+                  <div class="text-left">
+                    <div class="show_per_page">
+                      Show
+                      <mat-form-field>
+                        <mat-select
+                          floatPlaceholder="never"
+                          (change)="showPerPage(limit)"
+                          [(ngModel)]="limit"
+                        >
+                          <mat-option [value]="15">15</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                    <div class="show_total_count">
+                      {{ totalRecords }}
                     </div>
                   </div>
-                </td>
-              </tr>
-            </tfoot>
-          }
-        </table>
-      </div>
+                  <div class="text-right">
+                    @if (count > limit) {
+                    <ngb-pagination
+                      [collectionSize]="count"
+                      [(page)]="page"
+                      size="sm"
+                      [pageSize]="limit"
+                      [maxSize]="5"
+                      [rotate]="true"
+                      [ellipses]="false"
+                      [boundaryLinks]="true"
+                      (pageChange)="onPage($event)"
+                    ></ngb-pagination>
+                    }
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tfoot>
+        }
+      </table>
     </div>
   </div>
+</div>
 }

@@ -1,26 +1,44 @@
-import { Component, OnInit, Input, ViewEncapsulation, ContentChild, TemplateRef, Inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Subject, throwError as observableThrowError } from 'rxjs';
-import { catchError, timeout, tap } from 'rxjs/operators';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { FormControl } from '@angular/forms';
+import {
+    Component,
+    OnInit,
+    Input,
+    ViewEncapsulation,
+    ContentChild,
+    TemplateRef,
+    Inject,
+} from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { Subject, throwError as observableThrowError } from "rxjs";
+import {
+    debounceTime,
+    distinctUntilChanged,
+    catchError,
+    timeout,
+    tap,
+} from "rxjs/operators";
+import { FormControl } from "@angular/forms";
 
 @Component({
-    selector: 'ng-datatable-x',
-    styleUrls: ['./datatable.component.scss'],
-    templateUrl: './datatable.component.html',
-    encapsulation: ViewEncapsulation.None
+    selector: "ng-datatable-x",
+    styleUrls: ["./datatable.component.scss"],
+    templateUrl: "./datatable.component.html",
+    encapsulation: ViewEncapsulation.None,
 })
 export class DataTableXComponent implements OnInit {
     @Input() public config: any;
     public columns: any[];
     public route: any;
     public colSpans: any[];
-    @ContentChild('tablerow', { static: false }) public tablerow: TemplateRef<any>;
-    @ContentChild('rowGroups', { static: false }) public rowGroups: TemplateRef<any>;
-    @ContentChild('rowDetails', { static: false }) public rowDetails: TemplateRef<any>;
-    @ContentChild('selectedBtnsGroups', { static: false }) public selectedBtnsGroups: TemplateRef<any>;
-    @ContentChild('btnGroups', { static: false }) public btnGroups: TemplateRef<any>;
+    @ContentChild("tablerow", { static: false })
+    public tablerow: TemplateRef<any>;
+    @ContentChild("rowGroups", { static: false })
+    public rowGroups: TemplateRef<any>;
+    @ContentChild("rowDetails", { static: false })
+    public rowDetails: TemplateRef<any>;
+    @ContentChild("selectedBtnsGroups", { static: false })
+    public selectedBtnsGroups: TemplateRef<any>;
+    @ContentChild("btnGroups", { static: false })
+    public btnGroups: TemplateRef<any>;
     public watchSuccess: Subject<any> = new Subject();
     public watchError: Subject<any> = new Subject();
     public params: any = {};
@@ -40,7 +58,7 @@ export class DataTableXComponent implements OnInit {
     public sort: any;
     public sorting: any = {};
     public enableSearch = false;
-    public searchValue = '';
+    public searchValue = "";
     public totalRecords: any;
     public checkBoxPrefix = Math.random().toString(36).slice(2);
     public spinner = true;
@@ -56,11 +74,12 @@ export class DataTableXComponent implements OnInit {
     }
 
     public ngOnInit() {
-        if (this.config.spinner != undefined) {
+        if (this.config.spinner !== undefined) {
             this.spinner = this.config.spinner;
         }
-        this.searchCtrl.valueChanges.pipe(debounceTime(300),
-            distinctUntilChanged()).subscribe(val => {
+        this.searchCtrl.valueChanges
+            .pipe(debounceTime(300), distinctUntilChanged())
+            .subscribe((val) => {
                 if (this.addSearch) {
                     this.onSearch(val);
                 }
@@ -73,18 +92,23 @@ export class DataTableXComponent implements OnInit {
         this.columns = this.config.columns;
         this.colSpans = this.config.colSpans;
         if (this.route) {
-            const searchableCols = this.columns.filter((column: any) => (column.searchable === true));
+            const searchableCols = this.columns.filter(
+                (column: any) => column.searchable === true
+            );
             this.setFilterColumns(searchableCols);
             const index = this.config.defaultSortColumnIndex;
             if (index != null && index >= 0) {
-                this.setDefaultSorting(this.columns[index].searchKey, this.columns[index].sortable);
+                this.setDefaultSorting(
+                    this.columns[index].searchKey,
+                    this.columns[index].sortable
+                );
             }
             this.loadDatatable();
         }
     }
     public setFilterColumns(columns: any[]) {
-        this.searchItems = columns;
-        if (columns && columns.length) {
+        this.searchItems = columns ?? [];
+        if (columns.length) {
             this.searchBy = columns[0].searchKey;
             this.searchName = columns[0].name;
         }
@@ -100,43 +124,47 @@ export class DataTableXComponent implements OnInit {
         if (this.page === 1) {
             this.rowsIndex = 0;
         } else {
-            this.rowsIndex = (this.limit * (this.page - 1));
+            this.rowsIndex = this.limit * (this.page - 1);
         }
         this.params.page = this.page;
         this.params.limit = this.limit;
-        this.get().subscribe((data: any) => {
-            this.dataLoaded = true;
-            if (data && data.pagination) {
-                this.count = data.pagination.total;
-            }
-            this.rows = data.list;
-            this.totalRecords = 'TOTAL: ' + this.count;
-            if (this.expandAll) {
-                this.expandAll = false;
-                this.toggleExpandAll();
-            }
-            this.watchSuccess.next(data);
-        }, (err) => {
-            this.dataLoaded = true;
+
+        this.get().subscribe({
+            next: (data: any) => {
+                this.dataLoaded = true;
+                this.count = data?.pagination?.total;
+                this.rows = data.list;
+                this.totalRecords = "TOTAL: " + this.count;
+                if (this.expandAll) {
+                    this.expandAll = false;
+                    this.toggleExpandAll();
+                }
+                this.watchSuccess.next(data);
+            },
+            error: (err) => {
+                console.log("Datatable API Error:", err);
+                this.dataLoaded = true;
+            },
         });
     }
 
     public get() {
-        return this.http.get(this.route, {
-            headers: this.config.httpHeaders,
-            params: this.params
-        }).pipe(timeout(30000),
-            tap(res => {
-                this.spinner = false;
-                return this.handleSuccess(res);
-            }),
-            catchError((err) => {
-                return this.handleError(err);
-            }),
-        );
+        return this.http
+            .get(this.route, {
+                headers: this.config.httpHeaders,
+                params: this.params,
+            })
+            .pipe(
+                timeout(30000),
+                tap((res) => this.handleSuccess(res)),
+                catchError((err: any) => {
+                    return this.handleError(err);
+                })
+            );
     }
 
     public handleSuccess(data: any) {
+        this.spinner = false;
         this.ngxError = {};
         setTimeout(() => {
             this.addSearch = true;
@@ -148,7 +176,7 @@ export class DataTableXComponent implements OnInit {
         this.spinner = false;
         this.ngxError = error;
         this.watchError.next(error);
-        return observableThrowError(error || 'Server error');
+        return observableThrowError(error || "Server error");
     }
 
     public onPage(event: any) {
@@ -162,10 +190,10 @@ export class DataTableXComponent implements OnInit {
         this.selectedCount = 0;
         this.selectAll = false;
         for (const item of this.searchItems) {
-            delete this.params['filter[' + item.searchKey + ']'];
+            delete this.params["filter[" + item.searchKey + "]"];
         }
         if (this.searchValue) {
-            this.params['filter[' + this.searchBy + ']'] = value;
+            this.params["filter[" + this.searchBy + "]"] = value;
         }
         this.page = 1;
         this.pagination();
@@ -175,9 +203,9 @@ export class DataTableXComponent implements OnInit {
         this.selectedCount = 0;
         this.selectAll = false;
         this.enableSearch = !this.enableSearch;
-        this.searchValue = '';
+        this.searchValue = "";
         for (const item of this.searchItems) {
-            delete this.params['filter[' + item.searchKey + ']'];
+            delete this.params["filter[" + item.searchKey + "]"];
         }
         this.page = 1;
         this.pagination();
@@ -185,10 +213,13 @@ export class DataTableXComponent implements OnInit {
 
     public loadDatatable() {
         this.sortCols = [];
-        delete this.params['sort_by'];
+        delete this.params["sort_by"];
         const index = this.config.defaultSortColumnIndex;
         if (index != null && index >= 0) {
-            this.setDefaultSorting(this.columns[index].searchKey, this.columns[index].sortable);
+            this.setDefaultSorting(
+                this.columns[index].searchKey,
+                this.columns[index].sortable
+            );
         }
         this.clearSearch();
     }
@@ -198,11 +229,11 @@ export class DataTableXComponent implements OnInit {
             if (!this.config.defaultSortOrderDesc) {
                 this.sorting.ascending = true;
                 this.params.sort_by = columnName;
-                this.sortCols.push({ "name": columnName, "clicked": 1, "direction": 1 });
+                this.sortCols.push({ name: columnName, clicked: 1, direction: 1 });
             } else {
                 this.sorting.ascending = false;
-                this.params.sort_by = '-' + columnName;
-                this.sortCols.push({ "name": columnName, "clicked": 2, "direction": -1 });
+                this.params.sort_by = "-" + columnName;
+                this.sortCols.push({ name: columnName, clicked: 2, direction: -1 });
             }
             this.sorting.column = columnName;
             this.sortByColumn = columnName;
@@ -213,15 +244,15 @@ export class DataTableXComponent implements OnInit {
         if (!this.config.multiSorting) {
             const asc = this.sorting.ascending;
             if (columnName === this.sorting.column) {
-                return asc ? 'down' : 'up';
+                return asc ? "down" : "up";
             } else {
                 return;
             }
         } else {
             if (this.sortCols.length > 0) {
-                let selectCol = this.filterArray(this.sortCols, 'name', columnName);
+                let selectCol = this.filterArray(this.sortCols, "name", columnName);
                 if (selectCol) {
-                    return selectCol.direction === 1 ? 'down' : 'up';
+                    return selectCol.direction === 1 ? "down" : "up";
                 } else {
                     return;
                 }
@@ -244,31 +275,35 @@ export class DataTableXComponent implements OnInit {
                     sort.ascending = true;
                 }
                 if (!sort.ascending) {
-                    columnName = '-' + columnName;
+                    columnName = "-" + columnName;
                 }
                 this.params.sort_by = columnName;
             } else {
-                let tmp = this.sortByColumn.length ? this.sortByColumn.split(',') : [];
-                const i = _.indexOf(tmp, columnName);
-                if (i >= 0) {
-                    tmp.splice(i, 1);
+                let tmp = this.sortByColumn.length ? this.sortByColumn.split(",") : [];
+                const index = tmp.indexOf(columnName);
+                if (index >= 0) {
+                    tmp.splice(index, 1);
                 } else {
                     tmp.push(columnName);
                 }
-                this.sortByColumn = tmp.join(',');
-                let selectCol = _.find(this.sortCols, { name: columnName });
+                this.sortByColumn = tmp.join(",");
+                let selectCol = this.sortCols.find(
+                    (sortCol) => sortCol.name === columnName
+                );
                 if (selectCol) {
                     this.click(selectCol);
-                    let index = _.findIndex(this.sortCols, { name: columnName });
-                    this.sortCols.splice(index, 1, selectCol);
+                    let selectColIndex = this.sortCols.findIndex(
+                        (sortCol) => sortCol.name === columnName
+                    );
+                    this.sortCols.splice(index, 1, selectColIndex);
                 } else {
-                    this.sortCols.push({ "name": columnName, "clicked": 1, "direction": 1 })
+                    this.sortCols.push({ name: columnName, clicked: 1, direction: 1 });
                 }
 
                 let sortByarr = [];
                 this.sortCols.forEach((obj: any) => {
                     if (obj.direction !== 0) {
-                        sortByarr.push(obj.direction === 1 ? obj.name : '-' + obj.name);
+                        sortByarr.push(obj.direction === 1 ? obj.name : "-" + obj.name);
                     } else {
                         if (this.sortCols.length !== 1) {
                             const index = this.sortCols.indexOf(obj);
@@ -279,13 +314,14 @@ export class DataTableXComponent implements OnInit {
                 if (sortByarr.length > 0) {
                     this.params.sort_by = sortByarr.join();
                 } else {
-                    delete this.params['sort_by'];
+                    delete this.params["sort_by"];
                     if (this.sortCols[0].direction === 0) {
                         this.sortCols[0].direction = 1;
                         this.sortCols[0].clicked++;
                     }
                     const sortByName = this.sortCols[0].name;
-                    this.params.sort_by = this.sortCols[0].direction === 1 ? sortByName : '-' + sortByName;
+                    this.params.sort_by =
+                        this.sortCols[0].direction === 1 ? sortByName : "-" + sortByName;
                 }
             }
             this.page = 1;
@@ -295,7 +331,7 @@ export class DataTableXComponent implements OnInit {
 
     public filterArray(arr: any[], key: string, value: any) {
         if (arr && arr.length > 0) {
-            const obj = arr.filter((trans) => (trans[key] === value));
+            const obj = arr.filter((trans) => trans[key] === value);
             return obj[0];
         }
         return {};
@@ -322,8 +358,8 @@ export class DataTableXComponent implements OnInit {
     }
 
     public showPerPage(val: any) {
-        this.searchValue = '';
-        this.params.search = '';
+        this.searchValue = "";
+        this.params.search = "";
         this.limit = val;
         this.page = 1;
         this.pagination();
