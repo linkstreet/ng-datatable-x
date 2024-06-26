@@ -57,7 +57,6 @@ export class DataTableXComponent implements OnInit {
   public searchName: any;
   public sort: any;
   public sorting: any = {};
-  public enableSearch = false;
   public searchValue = "";
   public totalRecords: any;
   public checkBoxPrefix = Math.random().toString(36).slice(2);
@@ -91,39 +90,15 @@ export class DataTableXComponent implements OnInit {
     this.route = this.config.route;
     this.columns = this.config.columns;
     this.colSpans = this.config.colSpans;
-    console.log(this.route, JSON.stringify(this.params) === "{}", this.params);
     if (this.route) {
-      const searchableCols = this.columns.filter(
-        (column: any) => column.searchable === true
-      );
-      this.setFilterColumns(searchableCols);
-      //   const index = this.config.defaultSortColumnIndex;
-      //   if (index != null && index >= 0) {
-      //     this.setDefaultSorting(
-      //       this.columns[index].searchKey,
-      //       this.columns[index].sortable
-      //     );
-      //   }
       this.loadDatatable();
     }
   }
 
   public loadDatatable() {
-    // console.log(JSON.stringify(this.params) === "{}", this.params);
-    if (JSON.stringify(this.params) === "{}") {
-      //   alert();
-      //   this.page = this.params.page;
-      //   if (this.params.search) {
-      //     this.searchValue = this.params.search;
-      //   }
-      //   if (this.params.sort_by) {
-      //     this.searchValue = this.params.search;
-      //   }
-      this.params["filter[status]"] = "INACTIVE";
-      this.pagination();
+    if (this.params["sort_by"]) {
+      this.applyParamsSortBy();
     } else {
-      this.sortCols = [];
-      delete this.params["sort_by"];
       const index = this.config.defaultSortColumnIndex;
       if (index != null && index >= 0) {
         this.setDefaultSorting(
@@ -131,8 +106,23 @@ export class DataTableXComponent implements OnInit {
           this.columns[index].sortable
         );
       }
-      this.clearSearch();
     }
+    if (this.params["filter[search]"]) {
+      this.searchValue = this.params["filter[search]"];
+    } else {
+      this.searchValue = "";
+      const searchableCols = this.columns.filter(
+        (column: any) => column.searchable === true
+      );
+      this.setFilterColumns(searchableCols);
+      for (const item of this.searchItems) {
+        delete this.params["filter[" + item.searchKey + "]"];
+      }
+    }
+    this.page = this.params["page"] ? parseInt(this.params["page"]) : 1;
+    this.selectedCount = 0;
+    this.selectAll = false;
+    this.pagination();
   }
 
   public setFilterColumns(columns: any[]) {
@@ -143,8 +133,39 @@ export class DataTableXComponent implements OnInit {
     }
   }
 
+  public applyParamsSortBy(): void {
+    let currentSortby = this.params["sort_by"];
+
+    let columnName = currentSortby.startsWith("-")
+      ? currentSortby.slice(1)
+      : currentSortby;
+
+    console.log("columnName", columnName);
+    if (!currentSortby.startsWith("-")) {
+      console.log("ascending", columnName);
+      this.sorting.ascending = true;
+      this.sortCols.push({ name: columnName, clicked: 1, direction: 1 });
+    } else {
+      console.log("desc", columnName);
+      this.sorting.ascending = false;
+      this.sortCols.push({ name: columnName, clicked: 2, direction: -1 });
+    }
+    this.sorting.column = columnName;
+    this.sortByColumn = columnName;
+
+    // if (!this.config.defaultSortOrderDesc) {
+    //   this.sorting.ascending = true;
+    //   this.params.sort_by = columnName;
+    //   this.sortCols.push({ name: columnName, clicked: 1, direction: 1 });
+    // } else {
+    //   this.sorting.ascending = false;
+    //   this.params.sort_by = "-" + columnName;
+    //   this.sortCols.push({ name: columnName, clicked: 2, direction: -1 });
+    // }
+  }
+
   public pagination() {
-    if (this.config.spinner != undefined) {
+    if (this.config.spinner !== undefined) {
       this.spinner = this.config.spinner;
     } else {
       this.spinner = true;
@@ -231,7 +252,6 @@ export class DataTableXComponent implements OnInit {
   public clearSearch() {
     this.selectedCount = 0;
     this.selectAll = false;
-    this.enableSearch = !this.enableSearch;
     this.searchValue = "";
     for (const item of this.searchItems) {
       delete this.params["filter[" + item.searchKey + "]"];
