@@ -108,6 +108,10 @@ export class DataTableXComponent implements OnInit {
       }
     }
     if (this.params["filter[search]"]) {
+      const searchableCols = this.columns.filter(
+        (column: any) => column.searchable === true
+      );
+      this.setFilterColumns(searchableCols);
       this.searchValue = this.params["filter[search]"];
     } else {
       this.searchValue = "";
@@ -135,33 +139,19 @@ export class DataTableXComponent implements OnInit {
 
   public applyParamsSortBy(): void {
     let currentSortby = this.params["sort_by"];
-
     let columnName = currentSortby.startsWith("-")
       ? currentSortby.slice(1)
       : currentSortby;
 
-    console.log("columnName", columnName);
     if (!currentSortby.startsWith("-")) {
-      console.log("ascending", columnName);
       this.sorting.ascending = true;
       this.sortCols.push({ name: columnName, clicked: 1, direction: 1 });
     } else {
-      console.log("desc", columnName);
       this.sorting.ascending = false;
       this.sortCols.push({ name: columnName, clicked: 2, direction: -1 });
     }
     this.sorting.column = columnName;
     this.sortByColumn = columnName;
-
-    // if (!this.config.defaultSortOrderDesc) {
-    //   this.sorting.ascending = true;
-    //   this.params.sort_by = columnName;
-    //   this.sortCols.push({ name: columnName, clicked: 1, direction: 1 });
-    // } else {
-    //   this.sorting.ascending = false;
-    //   this.params.sort_by = "-" + columnName;
-    //   this.sortCols.push({ name: columnName, clicked: 2, direction: -1 });
-    // }
   }
 
   public pagination() {
