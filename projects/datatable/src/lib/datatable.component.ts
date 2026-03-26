@@ -2,12 +2,15 @@ import {
   Component,
   OnInit,
   Input,
+  HostListener,
   ViewEncapsulation,
   ContentChild,
   TemplateRef,
   Inject,
+  Optional,
 } from "@angular/core";
 import { HttpClient, HttpClientModule } from "@angular/common/http";
+import { Router, ActivatedRoute } from "@angular/router";
 import { Subject, throwError as observableThrowError } from "rxjs";
 import {
   debounceTime,
@@ -15,6 +18,7 @@ import {
   catchError,
   timeout,
   tap,
+  take,
 } from "rxjs/operators";
 import { FormControl, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
@@ -50,6 +54,8 @@ export class DataTableXComponent implements OnInit {
   public rowGroups: TemplateRef<any>;
   @ContentChild("rowDetails", { static: false })
   public rowDetails: TemplateRef<any>;
+  @ContentChild("cardRows", { static: false })
+  public cardRows: TemplateRef<any>;
   @ContentChild("selectedBtnsGroups", { static: false })
   public selectedBtnsGroups: TemplateRef<any>;
   @ContentChild("btnGroups", { static: false })
@@ -82,14 +88,35 @@ export class DataTableXComponent implements OnInit {
   public sortByColumn: any = [];
   public sortCols: any = [];
   public refreshButton = true;
-  constructor(@Inject(HttpClient) http: HttpClient) {
+  public viewMode: 'table' | 'card' = 'table';
+  private preferredViewMode: 'table' | 'card' = 'table';
+  private readonly cardViewBreakpoint = 1200;
+  private router: Router | null = null;
+  private activatedRoute: ActivatedRoute | null = null;
+  constructor(
+    @Inject(HttpClient) http: HttpClient,
+    @Optional() @Inject(Router) router: Router,
+    @Optional() @Inject(ActivatedRoute) activatedRoute: ActivatedRoute
+  ) {
     this.http = http;
+    this.router = router || null;
+    this.activatedRoute = activatedRoute || null;
     this.searchCtrl = new FormControl();
   }
 
   public ngOnInit() {
     if (this.config.spinner !== undefined) {
       this.spinner = this.config.spinner;
+    }
+    if (this.activatedRoute) {
+      this.activatedRoute.queryParams.pipe(take(1)).subscribe((params) => {
+        if (params['view'] === 'card' || params['view'] === 'table') {
+          this.preferredViewMode = params['view'] as 'table' | 'card';
+        }
+        this.applyResponsiveViewMode();
+      });
+    } else {
+      this.applyResponsiveViewMode();
     }
     this.searchCtrl.valueChanges
       .pipe(debounceTime(300), distinctUntilChanged())
@@ -455,5 +482,35 @@ export class DataTableXComponent implements OnInit {
       }
     }
     this.onSearch(this.searchValue);
+  }
+
+  @HostListener('window:resize')
+  public onWindowResize() {
+    this.applyResponsiveViewMode();
+  }
+
+  private applyResponsiveViewMode() {
+    if (!this.config?.cardView) {
+      this.viewMode = 'table';
+      return;
+    }
+
+    this.viewMode = this.isCardViewBreakpoint() ? 'card' : this.preferredViewMode;
+  }
+
+  private isCardViewBreakpoint(): boolean {
+    return typeof window !== 'undefined' && window.innerWidth < this.cardViewBreakpoint;
+  }
+
+  public setViewMode(mode: 'table' | 'card') {
+    this.preferredViewMode = mode;
+    this.applyResponsiveViewMode();
+    if (this.router && this.activatedRoute) {
+      this.router.navigate([], {
+        relativeTo: this.activatedRoute,
+        queryParams: { view: mode },
+        queryParamsHandling: 'merge',
+      });
+    }
   }
 }
