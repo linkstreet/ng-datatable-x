@@ -50,7 +50,7 @@
               }
               <input
                 type="text"
-                class="form-control search-by"
+                class="form-control search-by ps-0"
                 placeholder="Search {{
                   searchItems.length === 1 ? searchItems[0]['name'] : searchName
                 }}"
@@ -63,7 +63,7 @@
                   (click)="clearSearch()"
                   class="input-group-append cursor-pointer"
                 >
-                  <span class="input-group-text">
+                  <span class="input-group-text clear-search-btn">
                     <i class="mdi mdi-close"></i>
                   </span>
                 </div>
