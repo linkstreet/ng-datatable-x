@@ -25,56 +25,65 @@
         }
         <nav class="navbar search-filters-navbar">
           <div class="search-filters-box">
-            <div class="input-group search-box">
-              <div class="input-group-prepend mr-0">
-                <span class="input-group-text">
-                  <i class="mdi mdi-magnify"></i>
-                </span>
-              </div>
-              @if (searchBy && searchItems.length > 1) {
-                <div class="input-group-btn">
-                  <mat-form-field>
-                    <mat-select
-                      [(ngModel)]="searchBy"
-                      (selectionChange)="onSearchDropdown()"
-                      name="filterby"
-                    >
-                      @for (item of searchItems; track item) {
-                        <mat-option [value]="item.searchKey">
-                          {{ item.name }}
-                        </mat-option>
-                      }
-                    </mat-select>
-                  </mat-form-field>
-                </div>
-              }
-              <input
-                type="text"
-                class="form-control search-by ps-0"
-                placeholder="Search {{
-                  searchItems.length === 1 ? searchItems[0]['name'] : searchName
-                }}"
-                autofocus
-                [(ngModel)]="searchValue"
-                [formControl]="searchCtrl"
-              />
-              @if (searchValue) {
-                <div
-                  (click)="clearSearch()"
-                  class="input-group-append cursor-pointer"
-                >
-                  <span class="input-group-text clear-search-btn">
-                    <i class="mdi mdi-close"></i>
+            @if (config.search) {
+              <div class="input-group search-box">
+                <div class="input-group-prepend mr-0">
+                  <span class="input-group-text">
+                    <i class="mdi mdi-magnify"></i>
                   </span>
                 </div>
-              }
-            </div>
+                @if (searchBy && searchItems.length > 1) {
+                  <div class="input-group-btn">
+                    <mat-form-field>
+                      <mat-select
+                        [(ngModel)]="searchBy"
+                        (selectionChange)="onSearchDropdown()"
+                        name="filterby"
+                      >
+                        @for (item of searchItems; track item) {
+                          <mat-option [value]="item.searchKey">
+                            {{ item.name }}
+                          </mat-option>
+                        }
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                }
+                <input
+                  type="text"
+                  class="form-control search-by ps-0"
+                  placeholder="Search {{
+                    searchItems.length === 1
+                      ? searchItems[0]['name']
+                      : searchName
+                  }}"
+                  autofocus
+                  [(ngModel)]="searchValue"
+                  [formControl]="searchCtrl"
+                />
+                @if (searchValue) {
+                  <div
+                    (click)="clearSearch()"
+                    class="input-group-append cursor-pointer"
+                  >
+                    <span class="input-group-text clear-search-btn">
+                      <i class="mdi mdi-close"></i>
+                    </span>
+                  </div>
+                }
+              </div>
+            } @else {
+              <nav class="navbar navbar-search">
+                <div class="navbar-text" [innerHTML]="config.title"></div>
+              </nav>
+            }
+
             <form class="form-inline">
               <div class="btn-group filter-sorting-outer" role="group">
                 @if (refreshButton) {
                   <button
                     type="button"
-                    class="btn btn-icon-only btn-icon-lg"
+                    class="btn btn-icon-only btn-icon-lg mt-2"
                     matTooltip="Refresh"
                     matTooltipPosition="above"
                     (click)="refresh()"
