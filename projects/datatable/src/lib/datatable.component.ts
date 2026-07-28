@@ -11,37 +11,39 @@ import {
 } from "@angular/core";
 import { HttpClient, HttpClientModule } from "@angular/common/http";
 import { Router, ActivatedRoute } from "@angular/router";
-import { Subject, throwError as observableThrowError } from "rxjs";
 import {
+  Subject,
+  catchError,
   debounceTime,
   distinctUntilChanged,
-  catchError,
-  timeout,
-  tap,
   take,
-} from "rxjs/operators";
+  tap,
+  throwError,
+  timeout,
+} from "rxjs";
 import { FormControl, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
 import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
 import { MatTooltipModule } from "@angular/material/tooltip";
-import { NgbPaginationModule } from "@ng-bootstrap/ng-bootstrap";
+import { NgbPaginationModule } from "@ng-bootstrap/ng-bootstrap/pagination";
 
 @Component({
-    selector: "ng-datatable-x",
-    styleUrls: ["./datatable.component.scss"],
-    templateUrl: "./datatable.component.html",
-    encapsulation: ViewEncapsulation.None,
-    imports: [
-            CommonModule,
-            FormsModule,
-            ReactiveFormsModule,
-            MatInputModule,
-            MatSelectModule,
-            NgbPaginationModule,
-            HttpClientModule,
-            MatTooltipModule
-        ],
+  selector: "ng-datatable-x",
+  styleUrls: ["./datatable.component.scss"],
+  templateUrl: "./datatable.component.html",
+  encapsulation: ViewEncapsulation.None,
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatSelectModule,
+    NgbPaginationModule,
+    HttpClientModule,
+    MatTooltipModule,
+  ],
 })
 export class DataTableXComponent implements OnInit {
   @Input() public config: any;
@@ -258,7 +260,7 @@ export class DataTableXComponent implements OnInit {
     this.spinner = false;
     this.ngxError = error;
     this.watchError.next(error);
-    return observableThrowError(error || "Server error");
+    return throwError(() => error || "Server error");
   }
 
   public onPage(event: any) {
