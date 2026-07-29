@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { DataTableXComponent } from './datatable.component';
 
@@ -6,9 +6,9 @@ describe('DataTableXComponent', () => {
   let component: DataTableXComponent;
   let fixture: ComponentFixture<DataTableXComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ DataTableXComponent ]
+      imports: [ DataTableXComponent ]
     })
     .compileComponents();
   }));
@@ -16,6 +16,10 @@ describe('DataTableXComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(DataTableXComponent);
     component = fixture.componentInstance;
+    component.config = {
+      columns: [],
+      colSpans: []
+    };
     fixture.detectChanges();
   });
 
